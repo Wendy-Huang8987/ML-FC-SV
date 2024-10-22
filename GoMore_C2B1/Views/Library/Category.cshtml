@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Category";
+}
+@{ ViewBag.Title = "ModelLibrary"; }
+@model IEnumerable<GoMore_C2B1.Models.Objectmodel>
+@using GoMore_C2B1.Resource;
+@using GoMore_C2B1.Models;
+@Styles.Render("~/Content/main")
+@Styles.Render("~/Content/DarkMode")
+@{ List<Objectmodel> objs = ViewBag.obj; }
+<main id="content" style="margin-left: 65px; margin-top: 10px;">
+    <section id="model-library">
+        <div class="library-wrapper">
+            <div class="library-container flex-column">
+                @foreach (Objectmodel obj in objs)
+                {
+                    <div class="library-content">
+                        <img class="u-expanded-width u-image u-image-default u-image-2" alt="" data-image-width="596" data-image-height="585" src="data:image/png;base64,@obj.ObjectImage">
+                        <a href="#" class="library-user"><i class="bi bi-person-square"></i>@obj.ObjectName</a>
+                        <form action="~/Library/ObjectDetail" method="get">
+                            <button name="ObjectName" value="@obj.ObjectName" class="u-active-none u-align-center u-border-1 u-border-active-palette-4-dark-1 u-border-black u-border-hover-palette-4-dark-1 u-btn u-button-style u-hover-none u-none u-text-body-color u-btn-3">More_Detail</button>
+                            <input name="ReleaseDate" value="@obj.ReleaseDate" type="hidden">
+                            <input name="Author" value="@obj.Author" type="hidden">
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</main>
+<script src="~/Scripts/main.js"></script>
+

@@ -1,0 +1,184 @@
+﻿:root {
+    --font-color: #1B1B1B;
+    --bg-color: #fff;
+    --navbar-color: #E3E6E9;
+    --icon-color: #000;
+    /*--sidebar-color: #E3E6E9;*/
+    --sidebar-color: #f5f5f5;
+    --hover-color: #fff;
+    --login-color: #fff;
+    --input-color: #Eaeeed;
+    --hover-color: #fff;
+    --contentborder-color: #fff;
+}
+
+[data-theme="dark"] {
+    --font-color: #fff;
+    --bg-color: #000;
+    --navbar-color: #18191A;
+    --icon-color: #fff;
+    --sidebar-color: #18191A;
+    --hover-color: #555555;
+    --login-color: #212529;
+    --input-color: #fff;
+    --hover-color: #27292D;
+}
+
+body {
+    background-color: var(--bg-color);
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+nav {
+    background-color: var(--sidebar-color);
+    transition: background-color 0.5s ease, color 0.5s ease;
+    box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
+}
+
+#content label, h1, h2, li{
+    color: var(--font-color);
+}
+
+.left-menu i {
+    color: var(--icon-color);
+}
+
+.right-menu-btn i {
+    color: var(--icon-color);
+}
+
+.sidebar {
+    background-color: var(--sidebar-color);
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+    .sidebar i {
+        color: var(--icon-color);
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    .sidebar a {
+        color: var(--font-color);
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+.mdl-menu {
+    background-color: var(--navbar-color);
+}
+
+.mdl-menu__item {
+    color: var(--font-color);
+}
+
+    .mdl-menu__item:hover {
+        background-color: var(--hover-color);
+        margin-left: 5px;
+        border-radius: 5px;
+    }
+
+.modal-content {
+    background-color: var(--login-color);
+}
+
+.login-sub-form {
+    background-color: var(--login-color);
+}
+
+.login-form input {
+    background-color: var(--input-color);
+}
+
+.login-title h2, label {
+    color: var(--font-color);
+}
+
+.modal-header button {
+    background-color: #fff;
+    z-index: 9;
+}
+
+.register-wrapper {
+    background-color: var(--login-color);
+}
+
+    .register-wrapper h2 {
+        color: var(--font-color);
+    }
+
+.input-box input {
+    background-color: var(--input-color);
+}
+
+.input-box select {
+    background-color: var(--input-color);
+}
+
+.forgot-title h2 {
+    color: var(--font-color);
+}
+
+.forgot-body input {
+    background-color: var(--input-color);
+}
+
+
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+}
+
+    .theme-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+}
+
+    .slider:before {
+        background-color: #fff;
+        bottom: 4px;
+        content: "";
+        height: 26px;
+        left: 4px;
+        position: absolute;
+        transition: .4s;
+        width: 26px;
+    }
+
+    .slider:after {
+        background: url('https://localhost:44339/sun_icon.svg');
+    }
+
+input:checked + .slider {
+    background-color: #555555;
+}
+
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }

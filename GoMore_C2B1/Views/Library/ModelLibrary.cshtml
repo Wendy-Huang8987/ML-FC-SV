@@ -1,0 +1,157 @@
+﻿@{ ViewBag.Title = "ModelLibrary"; }
+@model IEnumerable<GoMore_C2B1.Models.Objectmodel>
+@using GoMore_C2B1.Resource;
+@using GoMore_C2B1.Models;
+@Styles.Render("~/Content/main")
+@Styles.Render("~/Content/DarkMode")
+
+<main id="content" style="margin-left: 50px; margin-top: 10px;">
+    <section id="model-library">
+        <div class="library-wrapper">
+            <div class="library-container flex-column">
+                <div class="library-header">
+                    <span>Categories</span>
+                    @*   <form method="get" action="~/Library/Category">
+          <button class="filter-category" name="ObjectCategory" value="facadecurtainwall">FacadeCurtainWall</button>
+        <select class="filter-category">
+              <option value="">Select a category</option>
+              <option name="ObjectCategory" value="facadecurtainwall" selected="selected">FacadeCurtainWall</option>
+          </select>
+          <input type="submit" value="@Resource.Edit" class="btn btn-primary" />
+                    </form>*@
+
+                </div>
+                <div class="library-body">
+                    <div class="library-content-add" id="add">
+                        <a href="#" class="library-add" data-toggle="modal" data-target="#uploadmodelModal"><i class="bi bi-plus-lg"></i></a>
+                    </div>
+                    <div class="library-content">
+                        <form method="get" action="~/Library/Category">
+                            <button name="ObjectCategory" value="facadecurtainwall" style="border:0px;">
+                                <img src="~/Images/curtainwall.png">
+                            </button>
+                            <a class="library-user"> FacadeCurtainWall</a>
+                        </form>
+                    </div>
+                    <div class="modal fade" id="uploadmodelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" style="max-width: 735px;" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    @using (Html.BeginForm("UploadObject", "Library", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        <div class="register-wrapper">
+                                            <div class="upload-form">
+                                                <div class="row row-space">
+                                                    <div class="col-6">
+                                                        <div class="input-box">
+                                                            <label>@Resource.Upload_Image *</label>
+                                                            <input type="file" name="img" id="img" multiple required="required" accept=".png,.jpg">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="input-box">
+                                                            <label>@Resource.UploadModel *</label>
+                                                            <input type="file" name="Object_M" id="Object_M" multiple required="required" accept=".3dm,.ifc,.rvt,.dwg">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="input-box">
+                                                    <label>@Resource.Category *</label>
+                                                    <select id="select-d54c" name="ObjectCategory" class="u-input u-input-rectangle u-radius-10" required="required">
+                                                        <option value="facadecurtainwall">@Resource.FacadeCurtainWall</option>
+                                                    </select>
+                                                </div>
+                                                <div class="input-box">
+                                                    <label>@Resource.Belong_to *</label>
+                                                    <div class="u-form-radio-button-wrapper input-box">
+                                                        <div class="u-input-row">
+                                                            <input id="field-444b" type="radio" name="Owner" value="Organization" class="u-border-2 u-border-palette-5-dark-1 u-hover-palette-2-light-1 u-radius-15 u-white" checked="checked" required="required" data-calc="Organization">
+                                                            <label class="u-field-label label-title" for="field-444b">@Resource.Organization</label>
+                                                        </div>
+                                                        <div class="u-input-row">
+                                                            <input id="field-9370" type="radio" name="Owner" value="Personal" class="u-border-2 u-border-palette-5-dark-1 u-hover-palette-2-light-1 u-radius-15 u-white" required="required" data-calc="Personal">
+                                                            <label class="u-field-label label-title" for="field-9370">@Resource.Personal</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="input-box">
+                                                    <label>@Resource.Author_or_Organization_Name *</label>
+                                                    <input type="text" id="text-7ea7" name="OrganizationOfAuthor" class="u-input u-input-rectangle u-radius-10 input-box" required="required">
+                                                </div>
+                                                <div class="input-box">
+                                                    <label>@Resource.Model_Name *</label>
+                                                    <input type="text" placeholder="" id="text-0c31" name="ObjectName" class="input-box u-input u-input-rectangle u-radius-10" required="required">
+                                                </div>
+                                                <div class="input-box">
+                                                    <label>@Resource.Introduction *</label>
+                                                    <textarea rows="4" cols="50" maxlength="500" id="textarea-36da" name="ObjectIntroduction" class="u-input u-input-rectangle u-radius-10 input-box" placeholder="Please introduce your model and enter less than 500 words"></textarea>
+                                                </div>
+                                                <div class="input-box">
+                                                    <label>@Resource.Version *</label>
+                                                    <input type="text" placeholder="" id="text-b057" name="VersionNumber" class="u-input u-input-rectangle u-radius-10 input-box" required="required">
+                                                </div>
+                                                <div class="input-box">
+                                                    <label>@Resource.Height:</label>
+                                                    <input type="text" placeholder="" id="text-b057" name="VersionNumber" class="u-input u-input-rectangle u-radius-10 input-box" required="required">
+                                                </div><div class="input-box">
+                                                    <label>@Resource.Width:</label>
+                                                    <input type="text" placeholder="" id="text-b057" name="VersionNumber" class="u-input u-input-rectangle u-radius-10 input-box" required="required">
+                                                </div>
+                                                <div class="input-box">
+                                                    <label>@Resource.Depth:</label>
+                                                    <input type="text" placeholder="" id="text-b057" name="VersionNumber" class="u-input u-input-rectangle u-radius-10 input-box" required="required">
+                                                </div>
+                                                <div class="input-box">
+                                                    <label>@Resource.Unit *</label>
+                                                    <div class="u-form-select-wrapper input-box">
+                                                        <select id="select-65d5" name="Unit" class="u-input u-input-rectangle u-radius-10" required="required">
+                                                            <option value="mm" data-calc="Millimeters">@Resource.millimeter</option>
+                                                            <option value="cm" data-calc="Centimeters">@Resource.centimeter</option>
+                                                            <option value="m" data-calc="Meters">@Resource.meter</option>
+                                                            <option data-calc="Kilometers" value="km">@Resource.kilometer</option>
+                                                            <option data-calc="Inches" value="inch">@Resource.inch</option>
+                                                            <option data-calc="Feet" value="ft">@Resource.feet</option>
+                                                            <option data-calc="Yards" value="yd">@Resource.yard</option>
+                                                            <option data-calc="Miles" value="mil">@Resource.mile</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="input-box">
+                                                    <label>@Resource.Product_Structure</label>
+                                                    <input type="text" placeholder="" id="text-d7d6" name="ProductMaterialStructure" class="u-input u-input-rectangle u-radius-10 input-box">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputCardLevel" class="label-title">@Resource.Specification (.pdf)</label>
+                                                    <div class="input-box">
+                                                        <input type="file" name="Specification" id="Specification" multiple>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="inputCardLevel" class="label-title">@Resource.Specification (.pdf)</label>
+                                                    <div class="input-box">
+                                                        <input type="file" name="Specification" id="Specification" multiple>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-secondary" >@Resource.Upload</button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            </div>
+                    </div>
+                        </div>
+
+                    </div>
+                </div>
+    </section>
+</main>
+
+<script src="~/Scripts/main.js"></script>

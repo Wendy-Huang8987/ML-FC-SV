@@ -1,0 +1,215 @@
+﻿@using GoMore_C2B1.Models;
+@Styles.Render("~/Content/DarkMode")
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="~/Content/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Fragment Manager</title>
+
+</head>
+<body>
+    <div id="iframeloading" style="display: none; position: absolute; z-index:99999999; top: 0px; left: 0px; width: 100%; height: 100%;">
+        <img src="~/AnimatedProgressBar.gif" alt="loading" style=" position: relative; left: 40%;" />
+    </div>
+    <div style="width:450px;height:800px; overflow-y:scroll; z-index:9999;position:absolute; background-color:black;color:aliceblue;right:0;">
+        <div class="input">file:<input type="text" class="filenameInput" id="filenameInput" name="filenameInput" value="" readonly /><button class="btn" name="SaveFileName" id="SaveFileName">Save</button><input id="text"></div>
+        <br>
+        <div class="input">Element Properties: <input type="text" id="ifcname"></div>
+        <br>
+    </div>
+    <div id="content" style="margin-left: 65px;">
+        <div style="width: calc(100vw - 65px); height: 94vh;" id="container"></div>
+        <div style="height: 18px; background-color: #222a32;"></div>
+    </div>
+
+
+    <script type="importmap">
+        {
+               "imports": {
+            "three": "../../../my-bim-app/node_modules/three/build/three.module.js",
+            "web-ifc": "../../../my-bim-app/node_modules/web-ifc/web-ifc-api.js",
+            "stats.js/src/Stats.js": "../../../my-bim-app/node_modules/stats.js/src/Stats.js",
+            "three/examples/jsm/libs/lil-gui.module.min": "../../../my-bim-app/node_modules/three/examples/jsm/libs/lil-gui.module.min.js",
+            "openbim-components": "../../Scripts/oriopenbim-components.js",
+             "client-zip": "../../Scripts/index.js"
+          }
+        }
+    </script>
+    <script type="module">
+        // Set up scene (see SimpleScene tutorial)
+        // Set up scene (see SimpleScene tutorial)
+
+        import * as THREE from 'three';
+        import * as OBC from 'openbim-components';
+        import * as WEBIFC from 'web-ifc';
+        import Stats from 'stats.js/src/Stats.js';
+        import * as dat from 'three/examples/jsm/libs/lil-gui.module.min';
+        import { downloadZip } from 'client-zip';
+
+        const container = document.getElementById('container');
+
+        const components = new OBC.Components();
+
+        components.scene = new OBC.SimpleScene(components);
+        const renderer = new OBC.PostproductionRenderer(components, container);
+        //components.renderer = new OBC.SimpleRenderer(components, container);
+        components.renderer = renderer;
+        //components.camera = new OBC.SimpleCamera(components);
+        const camera = new OBC.OrthoPerspectiveCamera(components);
+        components.camera = camera;
+        camera.controls.setLookAt(10, 10, 10, 0, 0, 0);
+        await components.init();
+        components.raycaster = new OBC.SimpleRaycaster(components);
+        components.init();
+
+
+
+        renderer.postproduction.enabled = true;
+        const scene = components.scene.get();
+
+        components.camera.controls.setLookAt(12, 6, 8, 0, 0, -10);
+        components.scene.setup();
+
+        const grid = new OBC.SimpleGrid(components, new THREE.Color(0x666666));
+        //components.tools.add('grid', grid);
+        const gridMesh = grid.get();
+        renderer.postproduction.customEffects.excludedMeshes.push(gridMesh);
+
+        //Cubemap
+        const directionalLight = new THREE.DirectionalLight();
+        directionalLight.position.set(5, 10, 3);
+        directionalLight.intensity = 0.5;
+        scene.add(directionalLight);
+
+        const ambientLight = new THREE.AmbientLight();
+        ambientLight.intensity = 0.5;
+        scene.add(ambientLight);
+
+        const navCube = new OBC.CubeMap(components);
+        navCube.offset = 1;
+        navCube.setPosition("bottom-left");
+        camera.up;
+
+        //const grid = new OBC.SimpleGrid(components, new THREE.Color(0x666666));
+        //const gridMesh = grid.get();
+
+        //clipper
+        const clipper = new OBC.EdgesClipper(components);
+        //clipper.enabled = false;
+        container.ondblclick = () => clipper.create();
+        window.onkeydown = (event) => {
+            if (event.code === 'Delete' || event.code === 'Backspace') {
+                clipper.delete();
+            }
+        };
+
+        let fragments = new OBC.FragmentManager(components);
+
+        const ifcLoader = new OBC.FragmentIfcLoader(components);
+
+        ifcLoader.settings.wasm = {
+            path: "https://unpkg.com/web-ifc@0.0.46/",
+            absolute: true
+        }
+        const excludedCats = [
+            WEBIFC.IFCTENDONANCHOR,
+            WEBIFC.IFCREINFORCINGBAR,
+            WEBIFC.IFCREINFORCINGELEMENT,
+        ];
+
+        for (const cat of excludedCats) {
+            ifcLoader.settings.excludedCategories.add(cat);
+        }
+
+        ifcLoader.settings.webIfc.COORDINATE_TO_ORIGIN = true;
+        ifcLoader.settings.webIfc.OPTIMIZE_PROFILES = true;
+
+        ifcLoader.onIfcLoaded.add(async (model) => {
+            propertiesProcessor.process(model);
+            highlighter.events.select.onHighlight.add((selection) => {
+                const fragmentID = Object.keys(selection)[0];
+                const expressID = Number([...selection[fragmentID]][0]);
+                propertiesProcessor.renderProperties(model, expressID);
+            });
+            highlighter.update();
+        });
+
+
+        const highlighter = new OBC.FragmentHighlighter(components)
+        highlighter.setup();
+
+
+        components.renderer.postproduction.customEffects.outlineEnabled = true;
+        highlighter.outlinesEnabled = true;
+        highlighter.zoomToSelection = true;
+
+        const customEffects = components.renderer.postproduction.customEffects;
+        customEffects.excludedMeshes.push(grid.get());
+
+        const effects = components.renderer.postproduction.customEffects;
+        effects.excludedMeshes.push(gridMesh);
+
+
+        const propertiesProcessor = new OBC.IfcPropertiesProcessor(components)
+        /* propertiesProcessor.enabled = true;*/
+        highlighter.events.select.onClear.add(() => {
+            propertiesProcessor.cleanPropertiesList()
+        })
+
+        const propsManager = new OBC.IfcPropertiesManager(components);
+        propertiesProcessor.propertiesManager = propsManager;
+
+
+        const propsFinder = new OBC.IfcPropertiesFinder(components);
+        await propsFinder.init();
+        propsFinder.uiElement.get("queryWindow").visible = true;
+
+        propsFinder.onFound.add(result => {
+            highlighter.highlightByID("select", result);
+        })
+
+        //modelTree
+        const modelTree = new OBC.FragmentTree(components);
+        await modelTree.init();
+        modelTree.update(['storeys', 'entities']);
+        modelTree.onSelected.add((filter) => {
+            highlighter.highlightByID('select', filter, true, true);
+        });
+        modelTree.onHovered.add((filter) => {
+            highlighter.highlightByID('hover', filter);
+        });
+
+        function disposeFragments() {
+            fragments.dispose();
+        }
+        const disposeButton = new OBC.Button(components);
+        disposeButton.materialIcon = "delete";
+        disposeButton.tooltip = "Delete model";
+        //toolbar.addChild(disposeButton);
+        disposeButton.onClick.add(() => disposeFragments());
+
+        const mainToolbar = new OBC.Toolbar(components, { name: 'Main Toolbar', position: 'bottom' })
+        mainToolbar.addChild(
+            ifcLoader.uiElement.get("main"),
+            propertiesProcessor.uiElement.get("main"),
+            clipper.uiElement.get("main"),
+            modelTree.uiElement.get("main"),
+            camera.uiElement.get("main"),
+            fragments.uiElement.get("main"),
+            propsFinder.uiElement.get("main")
+        )
+        components.ui.addToolbar(mainToolbar)
+
+
+                                        //const stats = new Stats();
+                                        //stats.showPanel(2);
+                                        //document.body.append(stats.dom);
+                                        //stats.dom.style.left = '0px';
+                                        ////const renderer = components.renderer;
+                                        //renderer.onBeforeUpdate.add(() => stats.begin());
+                                        //renderer.onAfterUpdate.add(() => stats.end());
+    </script>
+</body>

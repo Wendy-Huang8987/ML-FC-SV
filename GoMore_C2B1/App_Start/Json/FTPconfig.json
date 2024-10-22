@@ -1,0 +1,9 @@
+{
+  "ftpserver": "ftp://192.168.0.221/",
+
+  "ftpuser": "FTPadmin",
+
+  "ftppass": "!Ntustcc123",
+
+  "ftpMainFolder": "Model/"
+}

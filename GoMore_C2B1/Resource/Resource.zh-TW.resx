@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Library" xml:space="preserve">
+    <value>模型庫</value>
+  </data>
+  <data name="Factory" xml:space="preserve">
+    <value>加工中心</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>上傳</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>日程</value>
+  </data>
+  <data name="Display" xml:space="preserve">
+    <value>顯示</value>
+  </data>
+  <data name="Accountmanager" xml:space="preserve">
+    <value>用戶管理</value>
+  </data>
+  <data name="Modelmanager" xml:space="preserve">
+    <value>模型管理</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>電子郵件</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>行動</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>權限</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>下一個</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>上一個</value>
+  </data>
+  <data name="SignInAcc" xml:space="preserve">
+    <value>登入您的帳戶</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密碼</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>登入</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>忘記密碼</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>注冊</value>
+  </data>
+  <data name="EmailPlaceholder" xml:space="preserve">
+    <value>請輸入您的電子郵件地址</value>
+  </data>
+  <data name="PasswordPlaceholder" xml:space="preserve">
+    <value>請輸入您的密碼</value>
+  </data>
+  <data name="RegisterAccount" xml:space="preserve">
+    <value>注冊您的帳戶</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>名</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>姓</value>
+  </data>
+  <data name="ChooseCountry" xml:space="preserve">
+    <value>請選擇你所在的國家</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>使用者名稱</value>
+  </data>
+  <data name="Occupation" xml:space="preserve">
+    <value>職業</value>
+  </data>
+  <data name="CompanyOrganization" xml:space="preserve">
+    <value>公司 / 組織</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>國家</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>確認密碼</value>
+  </data>
+  <data name="FirstNamePlaceholder" xml:space="preserve">
+    <value>請輸入您的名字</value>
+  </data>
+  <data name="LastNamePlaceholder" xml:space="preserve">
+    <value>請輸入您的姓氏</value>
+  </data>
+  <data name="UsernamePlaceholder" xml:space="preserve">
+    <value>請輸入您的用戶名</value>
+  </data>
+  <data name="OccupationPlaceholder" xml:space="preserve">
+    <value>請輸入您的職業</value>
+  </data>
+  <data name="CompanyOrganizationPlaceholder" xml:space="preserve">
+    <value>請輸入您的公司/組織</value>
+  </data>
+  <data name="ConfirmPasswordPlaceholder" xml:space="preserve">
+    <value>請確認您的密碼</value>
+  </data>
+  <data name="Afghanistan" xml:space="preserve">
+    <value>阿富汗</value>
+  </data>
+  <data name="PasswordRequirements" xml:space="preserve">
+    <value>密碼要求</value>
+  </data>
+  <data name="minimum8char" xml:space="preserve">
+    <value>至少8個字符</value>
+  </data>
+  <data name="OneUppercaseLetter" xml:space="preserve">
+    <value>至少有一個大寫字母</value>
+  </data>
+  <data name="OneLowercaseLetter" xml:space="preserve">
+    <value>至少有一個小寫字母</value>
+  </data>
+  <data name="OneSpecialChar" xml:space="preserve">
+    <value>至少有一個特殊字符</value>
+  </data>
+  <data name="OneDigit" xml:space="preserve">
+    <value>至少有一個數字</value>
+  </data>
+  <data name="RecoverPassword" xml:space="preserve">
+    <value>恢復您的密碼</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="BackToLogin" xml:space="preserve">
+    <value>回到登入</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>編輯</value>
+  </data>
+  <data name="SelectRole" xml:space="preserve">
+    <value>權限選擇</value>
+  </data>
+  <data name="Taiwan" xml:space="preserve">
+    <value>台灣</value>
+  </data>
+  <data name="FeaturesDescription" xml:space="preserve">
+    <value>功能描述</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>儀表板</value>
+  </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>聯絡我們</value>
+  </data>
+  <data name="AboutUs" xml:space="preserve">
+    <value>關於我們</value>
+  </data>
+  <data name="LibraryFeatures" xml:space="preserve">
+    <value>您可以輕鬆儲存和展示 3D 模型的空間。</value>
+  </data>
+  <data name="FactoryFeatures" xml:space="preserve">
+    <value>上傳、自訂、創建 - 將 3D 模型轉變為個人化創作的入口。</value>
+  </data>
+  <data name="ScheduleFeatures" xml:space="preserve">
+    <value>在管理專案時間表的同時無縫檢視和使用 3D 模型。</value>
+  </data>
+  <data name="ContactUsFeatures" xml:space="preserve">
+    <value>您可以直接聯繫周到的客戶服務 - 我們隨時為您提供及時的協助。</value>
+  </data>
+  <data name="ModelProject" xml:space="preserve">
+    <value>模型專案</value>
+  </data>
+  <data name="Author_or_Organization_Name" xml:space="preserve">
+    <value>作者/組織</value>
+  </data>
+  <data name="Belong_to" xml:space="preserve">
+    <value>所屬者</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>模型類別</value>
+  </data>
+  <data name="centimeter" xml:space="preserve">
+    <value>公分</value>
+  </data>
+  <data name="CheckModel" xml:space="preserve">
+    <value>檢查模型</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>評論</value>
+  </data>
+  <data name="Comment_Area" xml:space="preserve">
+    <value>評論區</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>下載</value>
+  </data>
+  <data name="FacadeCurtainWall" xml:space="preserve">
+    <value>立面幕牆</value>
+  </data>
+  <data name="feet" xml:space="preserve">
+    <value>尺</value>
+  </data>
+  <data name="FileType" xml:space="preserve">
+    <value>檔案類別</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>模型高度</value>
+  </data>
+  <data name="inch" xml:space="preserve">
+    <value>英吋</value>
+  </data>
+  <data name="Introduction" xml:space="preserve">
+    <value>介紹</value>
+  </data>
+  <data name="kilometer" xml:space="preserve">
+    <value>公里</value>
+  </data>
+  <data name="meter" xml:space="preserve">
+    <value>米</value>
+  </data>
+  <data name="mile" xml:space="preserve">
+    <value>英里</value>
+  </data>
+  <data name="millimeter" xml:space="preserve">
+    <value>毫米</value>
+  </data>
+  <data name="Model_Information" xml:space="preserve">
+    <value>關於模型</value>
+  </data>
+  <data name="Model_Name" xml:space="preserve">
+    <value>模型名稱</value>
+  </data>
+  <data name="Organization" xml:space="preserve">
+    <value>組織</value>
+  </data>
+  <data name="Product_Accessories" xml:space="preserve">
+    <value>產品配件</value>
+  </data>
+  <data name="Product_Structure" xml:space="preserve">
+    <value>產品結構</value>
+  </data>
+  <data name="Software_Specifications" xml:space="preserve">
+    <value>軟體規格</value>
+  </data>
+  <data name="Specification" xml:space="preserve">
+    <value>規格</value>
+  </data>
+  <data name="UploadModel" xml:space="preserve">
+    <value>模型上傳</value>
+  </data>
+  <data name="Upload_Image" xml:space="preserve">
+    <value>模型照片上傳</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>版本</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>模型寬度</value>
+  </data>
+  <data name="yard" xml:space="preserve">
+    <value>碼</value>
+  </data>
+  <data name="Date_of_publishing" xml:space="preserve">
+    <value>出版日期</value>
+  </data>
+  <data name="Depth" xml:space="preserve">
+    <value>模型深度</value>
+  </data>
+  <data name="Enter_Comment" xml:space="preserve">
+    <value>在此輸入您的評論</value>
+  </data>
+  <data name="Personal" xml:space="preserve">
+    <value>個人</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>尺寸單位</value>
+  </data>
+  <data name="Created_Time" xml:space="preserve">
+    <value>建立時間</value>
+  </data>
+  <data name="Model_Library" xml:space="preserve">
+    <value>模型庫</value>
+  </data>
+  <data name="YourModel" xml:space="preserve">
+    <value>您所上傳的模型</value>
+  </data>
+  <data name="Assembling" xml:space="preserve">
+    <value>組裝中</value>
+  </data>
+  <data name="ChangeStatus" xml:space="preserve">
+    <value>修改狀態</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>加工中</value>
+  </data>
+  <data name="RefreshModel" xml:space="preserve">
+    <value>請刷新模型狀態</value>
+  </data>
+  <data name="UploadRelated" xml:space="preserve">
+    <value>上傳相關聯檔案</value>
+  </data>
+</root>

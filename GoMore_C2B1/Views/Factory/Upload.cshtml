@@ -1,0 +1,117 @@
+﻿@model IEnumerable<GoMore_C2B1.Models.FactoryModel>
+@{ ViewBag.Title = "Upload"; }
+
+@Styles.Render("~/Content/main")
+@Styles.Render("~/Content/DarkMode")
+
+
+<main id="content" style="margin-left: 65px; margin-top: 70px;">
+    <section id="upload">
+        <div class="upload-wrapper">
+            <div class="upload-container">
+                <div class="upload-header justify-content-center">
+                    <div class="ms-2">
+                        <span>DWG Upload</span>
+                    </div>
+                </div>
+                <form action="~/Factory/Client" method="post" enctype="multipart/form-data">
+                    <div class="upload-body d-flex flex-column">
+                        <div class="ms-5 mt-4 mb-1">
+                            <span><b>File Name: </b><span id="fileName"></span></span>
+                        </div>
+                        <div class="d-flex justify-content-center mt-2 mb-1 me-5 ms-5">
+                            <input class="form-control" type="file" name="file" id="formFile" accept=".ifc,.dwg">
+                        </div>
+                        <div class="upload-submit d-flex justify-content-center mt-4 mb-4">
+                            <!--
+                             <button class="upload-btn">
+                                 Search
+                             </button>
+                            -->
+                            <select name="option" style="width: 200px;">
+                            <option value="3dm">3dm</option>
+                            <option value="dxf">dxf</option>
+                            </select>
+                            <button class="upload-btn" type="submit">
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <div class="upload-footer">
+                    <div class="upload-header justify-content-center">
+                        <div class="ms-2">
+                            <span>Upload History</span>
+                        </div>
+                    </div>
+                    <div class="table-container ms-5 mt-3 me-5">
+                        <table class="table table-striped table-bordered" id="upload-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">File Names</th>
+                                    <th scope="col">Uploaded Date</th>
+                                    <th scope="col">Uploader</th>
+                                    <th scope="col">File Type</th>
+                                    <th scope="col">File Convert to</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                <tr>
+                                    <td>@item.ID</td>
+                                    <td>@item.FileName</td>
+                                    <td>@item.UploadTime</td>
+                                    <td>@item.Uploader</td>
+                                    <td>@item.FileType</td>
+                                    <td>@item.FileConvert2</td>
+                                    <td style="display: flex; justify-content: space-between">
+                                        <form action="~/Factory/Download" method="post">
+                                            <input name="FileName" value="@item.FileName" hidden />
+                                            <input name="FileType" value="@item.FileType" hidden />
+                                            <input name="FileConvert2" value="@item.FileConvert2" hidden />
+                                            <button type="submit" style="
+                            border: 1px solid var(--font-color);
+                            margin-left: 5px;
+                            padding: 10px 14px;">
+                                                Download
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                        <ul class="pagination justify-content-center" id="Uploadpagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            @*<li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>*@
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<script src="~/Scripts/main.js"></script>
+<script src="~/Scripts/upload.js"></script>

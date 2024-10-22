@@ -1,0 +1,316 @@
+﻿@using GoMore_C2B1.Models;
+@{ ViewBag.Title = "ScheduleUpload";
+    List<ModelNameDB> modelNameDBs = ViewBag.models; }
+
+@Styles.Render("~/Content/main")
+@Styles.Render("~/Content/DarkMode")
+
+<main id="content" style="margin-left: 65px;">
+    <section>
+        <div class="upload-wrapper">
+            <div class="upload-container">
+                <div class="upload-header justify-content-center ms-2 me-2">
+                    <div class="ms-2">
+                        <span>Schedule Upload</span>
+                    </div>
+                </div>
+                <form action="~/Schedule/UnitFileUpload" method="post" enctype="multipart/form-data">
+
+                <div class="d-flex justify-content-center mt-2 mb-1 me-5 ms-5 flex-column">
+                    <div class="ms-2 mt-4 mb-1">
+                        <span><b>Choose upload to project folder : </b></span>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <select name="FileFolder" id="FileFolder">
+                            <option value="Drawings">Drawings</option>
+                            <option value="Documents">Documents</option>
+                            <option value="Models">Models</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-2 mb-1 me-5 ms-5 flex-column">
+                    <div class="ms-2 mt-4 mb-1">
+                        <span><b>File Name: </b></span>
+                    </div>
+                    <div class="d-flex flex-row" id="CreateInput">
+                        <input class="form-control" style="width: 100%;" type="file" name="UnitFile" id="UnitFile" multiple>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-2 mb-1 me-5 ms-5 flex-column">
+                    <div class="ms-2 mt-4 mb-1">
+                        <select name="ProjectName" id="ProjectName">
+                            @foreach (ModelNameDB model in modelNameDBs)
+                            {
+                                if (Session["Account"] != null)
+                                {
+                                    if (model.Author.Equals(Session["Account"]) || model.Permit.Split('*').Contains(Session["Account"]))
+                                    {
+                <option value="@Html.DisplayFor(modelItem => model.ProjectName)" @if (Session["Lastvalue"] != null)
+                {
+                    if (model.ProjectName.Equals(Session["Lastvalue"]))
+                    { @Html.Raw("selected=\"selected\"") ;
+                    }
+                }>
+                    @Html.DisplayFor(modelItem => model.ProjectName)
+                </option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-2 mb-1 me-5 ms-5 flex-column">
+            <div class="ms-2 mt-4 mb-1">
+                <span><b>Unit Name(link): </b></span>
+            </div>
+            <div class="d-flex flex-row">
+                <input type="text" class="form-control" name="UnitFileName" id="UnitFileName" />
+            </div>
+        </div>
+
+                <div class="d-flex justify-content-center mt-2 mb-1 me-5 ms-5 flex-column">
+                    <div class="ms-2 mt-4 mb-1">
+                        <span><b>Associated Tags: </b></span>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <input type="text" class="form-control" name="Tag" id="Tag" readonly />
+                        <button class="btn btn-outline-secondary ms-2" type="submit" style="padding: 8px 12px;" id="filedata">
+                            Create
+                        </button>
+                    </div>
+                </div>
+                <div class="upload-submit d-flex justify-content-center mt-4 mb-4">
+                    <input type="checkbox" class="btn-check" id="btn-check-outlined" value="Tag1" autocomplete="off">
+                    <label class="upload-tag btn btn-outline-primary me-3" for="btn-check-outlined">Tag</label><br>
+                    <input type="checkbox" class="btn-check" id="btn-check-outlined2" value="Tag2" autocomplete="off">
+                    <label class="upload-tag btn btn-outline-primary me-3" for="btn-check-outlined2">Tag</label><br>
+                    <input type="checkbox" class="btn-check" id="btn-check-outlined3" value="Tag3" autocomplete="off">
+                    <label class="upload-tag btn btn-outline-primary me-3" for="btn-check-outlined3">Tag</label><br>
+                    <input type="checkbox" class="btn-check" id="btn-check-outlined4" value="Tag4" autocomplete="off">
+                    <label class="upload-tag btn btn-outline-primary me-3" for="btn-check-outlined4">Tag</label><br>
+                    <input type="checkbox" class="btn-check" id="btn-check-outlined5" value="Tag5" autocomplete="off">
+                    <label class="upload-tag btn btn-outline-primary me-3" for="btn-check-outlined5">Tag</label><br>
+                    <input type="checkbox" class="btn-check" id="btn-check-outlined6" value="Tag6" autocomplete="off">
+                    <label class="upload-tag btn btn-outline-primary" for="btn-check-outlined6">Tag</label><br>
+                </div>
+                    </form>
+            </div>
+        </div>
+    </section>
+    <div id="container" hidden></div>
+
+</main>
+<script>
+    $("#FileFolder").change(function (e) {
+        let seleted = document.getElementById('FileFolder');
+        let input = document.getElementById('UnitFile');
+        if (seleted.value == "Models") {
+            input.removeAttribute("multiple");
+            input.accept = '.ifc';
+        } else {
+            input.multiple = 'multiple';
+            input.accept = '*';
+        }
+    })
+    $("#UnitFile").change(function (e) {
+
+        document.getElementById('UnitFileName').value = document.getElementById('UnitFile').files[0].name.split('.')[0];
+    })
+
+    $(".btn-check").change(function () {
+        var str = document.getElementById('Tag').value;
+        const words = str.split(' ');
+
+        if (words.includes($(this).val())) {
+            var strR = $(this).val()
+            var str = str.replace(' ' + strR, '');
+            $("#Tag").val(str);
+        } else {
+            $("#Tag").val(str + " " + $(this).val());
+        }
+    });
+</script>
+<script type="importmap">
+    {
+           "imports": {
+        "three": "../../../my-bim-app/node_modules/three/build/three.module.js",
+        "web-ifc": "../../../my-bim-app/node_modules/web-ifc/web-ifc-api.js",
+        "stats.js/src/Stats.js": "../../../my-bim-app/node_modules/stats.js/src/Stats.js",
+        "three/examples/jsm/libs/lil-gui.module.min": "../../../my-bim-app/node_modules/three/examples/jsm/libs/lil-gui.module.min.js",
+        "openbim-components": "../../Scripts/openbim-components2.js",
+         "client-zip": "../../Scripts/index.js"
+      }
+    }
+</script>
+<script type="module">
+    // Set up scene (see SimpleScene tutorial)
+    // Set up scene (see SimpleScene tutorial)
+
+    import * as THREE from 'three';
+    import * as OBC from 'openbim-components';
+    import * as WEBIFC from 'web-ifc';
+    import Stats from 'stats.js/src/Stats.js';
+    import * as dat from 'three/examples/jsm/libs/lil-gui.module.min';
+    import { downloadZip } from 'client-zip';
+    const container = document.getElementById('container');
+
+    const components = new OBC.Components();
+
+    components.scene = new OBC.SimpleScene(components);
+    components.renderer = new OBC.PostproductionRenderer(components, container);
+    components.camera = new OBC.SimpleCamera(components);
+    components.raycaster = new OBC.SimpleRaycaster(components);
+
+    components.init();
+
+    components.renderer.postproduction.enabled = true;
+
+    const scene = components.scene.get();
+
+    components.camera.controls.setLookAt(12, 6, 8, 0, 0, -10);
+
+    components.scene.setup();
+
+    const grid = new OBC.SimpleGrid(components, new THREE.Color(0x666666));
+    //components.tools.add('grid', grid);
+    const gridMesh = grid.get();
+    const customEffects = components.renderer.postproduction.customEffects;
+    customEffects.excludedMeshes.push(grid.get());
+
+    const fragments = new OBC.FragmentManager(components);
+    const fragmentIfcLoader = new OBC.FragmentIfcLoader(components);
+
+
+    const mainToolbar = new OBC.Toolbar(components, { name: 'Main Toolbar', position: 'bottom' });
+    components.ui.addToolbar(mainToolbar);
+    const ifcButton = fragmentIfcLoader.uiElement.get("main");
+    mainToolbar.addChild(ifcButton);
+
+    const propertiesProcessor = new OBC.IfcPropertiesProcessor(components);
+    const propsManager = new OBC.IfcPropertiesManager(components);
+
+
+    fragmentIfcLoader.settings.wasm = {
+        path: "https://unpkg.com/web-ifc@0.0.46/",
+        absolute: true
+    }
+
+
+    const excludedCats = [
+        WEBIFC.IFCTENDONANCHOR,
+        WEBIFC.IFCREINFORCINGBAR,
+        WEBIFC.IFCREINFORCINGELEMENT,
+    ];
+
+    for (const cat of excludedCats) {
+        fragmentIfcLoader.settings.excludedCategories.add(cat);
+    }
+
+
+    fragmentIfcLoader.settings.webIfc.COORDINATE_TO_ORIGIN = true;
+    fragmentIfcLoader.settings.webIfc.OPTIMIZE_PROFILES = true;
+
+
+    let button = document.getElementById('filedata');
+    button.addEventListener('click', run);
+    async function run() {
+        var filedata = document.getElementById("UnitFile").files;
+        for (let item of filedata) {
+            if (item.name.split('.')[1] == "ifc") {
+                const file = item;
+                const data = await file.arrayBuffer();
+                const buffer = new Uint8Array(data);
+                const model = await fragmentIfcLoader.load(buffer, file.name);
+
+                scene.add(model);
+                propertiesProcessor.propertiesManager = propsManager;
+                propertiesProcessor.process(model);
+                disposeFragments();
+
+                ////exportFragments(Author, ProjectName, file, filedata.name.split('.')[0], Permit, modelImage);
+            }
+
+        }
+    }
+
+    async function exportFragments(Author, ProjectName, file, name, Permit, modelImage) {
+        if (!fragments.groups.length) return;
+        const group = fragments.groups[0];
+        const data = fragments.export(group);
+        const blob = new Blob([data]);
+        const fragmentFile = new File([blob], name + ".frag");
+
+        const files = [];
+        files.push(file);
+        files.push(fragmentFile);
+        files.push(new File([JSON.stringify(group.properties)], name + ".json"));
+        //const result = await downloadZip(files).blob();
+        //result.name = 'example';
+        //alert(files);
+        //download(result);
+        var file = files;
+
+        // Create FormData object
+        var fileData = new FormData();
+
+        // Looping over all files and add it to FormData object
+        for (var i = 0; i < file.length; i++) {
+            fileData.append(file[i].name, file[i]);
+        }
+
+        // Adding one more key to FormData object
+        fileData.append(name, modelImage);
+        fileData.append('ImageName', modelImage.name);
+        fileData.append('Permit', Permit);
+        fileData.append('ModelName', name);
+        fileData.append('Author', Author);
+        fileData.append('ProjectName', ProjectName);
+        $.ajax({
+            url: "/Schedule/UploadModel",
+            type: "post",
+            contentType: false, // Not to set any content header
+            processData: false, // Not to process data
+            data: fileData,
+            success: function (result) {
+                alert(result);
+                document.getElementById("ProjectName").value = "";
+                document.getElementById("Permit").value = "";
+                document.getElementById("file2frag").value = "";
+                document.getElementById("ModelName").value = "";
+                document.getElementById("ModelImage").value = "";
+                location.reload();
+
+            },
+            error: function (err) {
+                alert(err.statusText);
+            }
+        });
+
+    }
+
+    /*MD
+    Now, this is how the download function looks like:
+    */
+
+    function download(file) {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(file);
+        link.download = file.name;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    }
+
+
+    function disposeFragments() {
+        fragments.dispose();
+        propsManager.dispose();
+    }
+
+</script>
+
+<script src="~/Scripts/main.js"></script>

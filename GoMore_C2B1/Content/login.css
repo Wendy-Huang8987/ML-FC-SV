@@ -1,0 +1,176 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500&display=swap");
+
+.login-container {
+    font-family: "Poppins", sans-serif !important;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.login-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* padding-top: 3rem; */
+}
+
+.login-sub-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 400px;
+    height: 500px;
+    border-radius: 12px;
+    background-color: white;
+}
+
+.login-title h2 {
+    font-family: "Poppins", sans-serif !important;
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-form label {
+    padding-left: 16px;
+    opacity: 0.75;
+}
+
+.login-form input {
+    display: flex;
+    border-radius: 5px;
+    border-style: none;
+    outline: none;
+    font-size: 16px;
+    margin-top: 8px;
+    padding: 12px 24px;
+    width: 375px;
+    background: #EAEEED;
+    color: #1B1B1B;
+    box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08) !important;
+}
+
+.login-input-icons i {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    cursor: pointer;
+    color: #000;
+    z-index: 99;
+}
+
+.login-input-icons {
+    width: 100%;
+    margin-bottom: 10px;
+    z-index: 99;
+    position: relative;
+}
+
+.login-input-field {
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    right: 20px;
+    top: 12px;
+    z-index: 99;
+}
+
+.input-icon:hover {
+    cursor: pointer;
+}
+
+.login-form button#submit {
+    padding: 12px 48px;
+    font-size: 16px;
+    border-radius: 50px;
+    color: white;
+    margin-top: 1rem;
+    cursor: pointer;
+    outline: none;
+    border-width: 0;
+    background-color: #1A1B27;
+    font-weight: 400;
+    width: 100%;
+}
+
+.login-form button#signup {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: rgb(57, 135, 207);
+    font-weight: 400;
+}
+
+.login-form button:hover {
+    opacity: 0.8;
+}
+
+.login-bottom-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.login-signup {
+    display: flex;
+    justify-content: center;
+    padding-left: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    color: #21D4FD;
+}
+
+    .login-signup:hover {
+        opacity: 0.8;
+    }
+
+#passwordRequirements {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+#passwordRequirements ul {
+    list-style-type: disc;
+    margin: 10px 0 0 20px;
+}
+
+#passwordRequirements p {
+    margin: 10px 0 0 18px;
+}
+
+.profile-close-btn {
+    font-size: 20px;
+}
+
+.forgot-title h2 {
+    font-family: "Poppins", sans-serif !important;
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.forgot-body input {
+    display: flex;
+    border-radius: 5px;
+    border-style: none;
+    outline: none;
+    font-size: 16px;
+    margin-top: 8px;
+    padding: 12px 24px;
+    background-color: #EAEEED;
+    box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+}
+
+.forgot-body label {
+    padding-left: 16px;
+    opacity: 0.75;
+}

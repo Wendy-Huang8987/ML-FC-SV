@@ -1,0 +1,602 @@
+﻿@using GoMore_C2B1.Models;
+@Styles.Render("~/Content/DarkMode")
+@using GoMore_C2B1.Resource;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="~/Content/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Display Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        ul li {
+            margin-left: 15px;
+            position: relative;
+            padding-left: 5px;
+        }
+
+            ul li::before {
+                content: " ";
+                position: absolute;
+                width: 1px;
+                background-color: #000;
+                top: 5px;
+                bottom: -12px;
+                left: -10px;
+            }
+
+        body > ul > li:first-child::before {
+            top: 12px;
+        }
+
+        ul li:not(:first-child):last-child::before {
+            display: none;
+        }
+
+        ul li:only-child::before {
+            display: list-item;
+            content: " ";
+            position: absolute;
+            width: 1px;
+            background-color: #000;
+            top: 5px;
+            bottom: 7px;
+            height: 7px;
+            left: -10px;
+        }
+
+        ul li::after {
+            content: " ";
+            position: absolute;
+            left: -10px;
+            width: 10px;
+            height: 1px;
+            background-color: #000;
+            top: 12px;
+        }
+    </style>
+</head>
+
+<dialog id="ChangeStatusDialog" style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        border: 1px solid var(--font-color);
+        border-radius: 10px;
+        box-shadow: 10px 5px 5px black;
+        background-color:aliceblue;
+        ">
+    Element Properties:
+    <input type="text" id="ifcnameDialog" readonly />
+    <br>Now Status:
+    <input type="text" id="StatusDialog" readonly />
+    <br>
+    <br>
+    <select class="form-control" name="StatusChange" id="StatusChange"><option value="安装完成">@Resource.Installed</option><option value="组装">@Resource.Processing</option><option value="加工">@Resource.Assembling</option></select>
+    <br>
+    <button class="form-control" type="submit" id="ChangeStatusBTN">@Resource.ChangeStatus</button>
+
+    <br>
+    <button class="form-control btn" onclick="ChangeStatusDialog.close();">close</button>
+</dialog>
+
+<body>
+    <div id="iframeloading" style="display: none; position: absolute; z-index:99999999; top: 0px; left: 0px; width: 100%; height: 100%;">
+        <img src="~/AnimatedProgressBar.gif" alt="loading" style=" position: relative; left: 40%;" />
+    </div>
+    <div style="width:450px;height:800px; overflow-y:scroll; z-index:9999;position:absolute; background-color:black;color:aliceblue;right:0;">
+        <input id="fileurl" value="@TempData["ifcFile"]" hidden>
+        <input id="ProjectName" value="@TempData["ProjectName"]" hidden>
+        <br>
+        <input type="text" id="testtext">
+        <div class="input">file:<input type="text" class="filenameInput" value="@TempData["ifcname"]" id="filenameInput" name="filenameInput" readonly /></div>
+        <br>
+        <div class="input">Element Properties: <input type="text" id="ifcname"></div>
+        <br>
+        <div class="input">Status: <input type="text" name="Status" id="Status"><button id="ChangeStatus">@Resource.ChangeStatus</button>@*<select name="StatusChange" id="StatusChange"><option value="安装完成">安装完成</option><option value="组装">组装</option><option value="加工">加工</option></select><button>修改</button>*@</div>
+        <br>
+        <label>Drawings</label>
+        <table class="browseTable table" id="Drawingstable">
+        </table>
+        <br>
+        <label>Documents</label>
+        <table class="browseTable table" id="Documentstable">
+        </table>
+        <br>
+        <label>Models</label>
+        <table class="browseTable table" id="Modelstable">
+        </table>
+        <br>
+        <label>Others</label>
+        <table class="browseTable table" id="Otherstable">
+        </table>
+        <br>
+        <div class="input" hidden>type:<span id="ifctype"></span></div>
+        <label>ModelTree</label>
+        <div id="Modeltree"></div>
+    </div>
+    <div id="content" style="margin-left: 65px;">
+        <div style="width: calc(100vw - 65px); height: 94vh;" id="container"></div>
+        <div style="height: 18px; background-color: #222a32;"></div>
+    </div>
+
+    <script type="text/javascript">
+        function ViewModel(UnitID) {
+            alert(UnitID);
+            $.ajax({
+                async: false,
+                url: "/Schedule/DisplayModel",
+                type: "post",
+                data: {
+                    ID: UnitID,
+                },
+                success: function (data) {
+                    var url = "/Schedule/DisplayProject";
+                    window.open(url, "_blank");
+                }
+            });
+        }
+        function DownloadFile(UnitID) {
+            alert(UnitID);
+        }
+
+        $('#ChangeStatus').on('click', function () {
+            var ifcname = document.getElementById("ifcname").value;
+            var status = document.getElementById("Status").value;
+
+            if (ifcname != "" || status != "") {
+                document.getElementById("StatusDialog").value = document.getElementById("Status").value;
+                document.getElementById("ifcnameDialog").value = document.getElementById("ifcname").value;
+
+                var ChangeStatusDialog = document.getElementById("ChangeStatusDialog");
+                ChangeStatusDialog.showModal();
+            }
+        });
+        $('#ChangeStatusBTN').on('click', function () {
+            var ifcname = document.getElementById("ifcname").value;
+            var ProjectName = document.getElementById("ProjectName").value;
+            var Status = document.getElementById("StatusChange").value;
+            var ChangeStatusDialog = document.getElementById("ChangeStatusDialog");
+            $.ajax({
+                type: "post",
+                url: "/Schedule/ChangeUnitStatus",
+                data: {
+                    Units: ifcname,
+                    ProjectName: ProjectName,
+                    Status: Status,
+                },
+                success: function (data) {
+                    alert(data.success);
+                    ChangeStatusDialog.close();
+                    $.ajax({
+                        type: "post",
+                        url: "/Schedule/GetStatus",
+                        data: {
+                            UnitFileName: document.getElementById('ifcname').value,
+                            ProjectName: document.getElementById('ProjectName').value,
+                        },
+                        success: function (data) {
+                            document.getElementById('Status').value = data.success;
+                        },
+                        error: function (data) {
+                            alert(data.error);
+                        }
+                    });
+                },
+                error: function (data) {
+                    alert(data.error);
+                }
+            });
+        });
+
+        function json2table(jsonString, $table) {
+            var json = jsonString;
+            var cols = Object.keys(json[0]);
+
+            var headerRow = '';
+            var bodyRows = '';
+
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            $table.html('<thead><tr></tr></thead><tbody></tbody>');
+
+            cols.map(function (col) {
+                headerRow += '<th>' + capitalizeFirstLetter(col) + '</th>';
+            });
+            headerRow += '<th>' + "Action" + '</th>';
+
+            json.map(function (row) {
+                bodyRows += '<tr>';
+
+                cols.map(function (colName) {
+                    bodyRows += '<td>' + row[colName] + '</td>';
+                })
+                bodyRows += '<td></td>';
+                bodyRows += '</tr>';
+            });
+
+            $table.find('thead tr').append(headerRow);
+            $table.find('tbody').append(bodyRows);
+        }
+
+        function json2Modeltable(jsonString, $table) {
+            var json = jsonString;
+            var cols = Object.keys(json[0]);
+
+            var headerRow = '';
+            var bodyRows = '';
+
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            $table.html('<thead><tr></tr></thead><tbody></tbody>');
+
+            cols.map(function (col) {
+                headerRow += '<th>' + capitalizeFirstLetter(col) + '</th>';
+            });
+            headerRow += '<th>' + "Action" + '</th>';
+
+            json.map(function (row) {
+                bodyRows += '<tr>';
+
+                cols.map(function (colName) {
+                    bodyRows += '<td>' + row[colName] + '</td>';
+                })
+                bodyRows += '<td><form method="post" action="/Schedule/DisplayModel" target="_blank"><button value="' + row["ID"] + '" >' + "ViewModel" + '</button></form></td>';
+                bodyRows += '</tr>';
+            });
+
+            $table.find('thead tr').append(headerRow);
+            $table.find('tbody').append(bodyRows);
+        }
+
+        function json2table2(jsonString, $table) {
+            var json = JSON.parse(jsonString);
+            var cols = Object.keys(json[0]);
+
+            var headerRow = '';
+            var bodyRows = '';
+
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+
+            $table.html('<thead><tr></tr></thead><tbody></tbody>');
+
+            cols.map(function (col) {
+                headerRow += '<th>' + capitalizeFirstLetter(col) + '</th>';
+            });
+
+            json.map(function (row) {
+                bodyRows += '<tr>';
+
+                cols.map(function (colName) {
+                    bodyRows += '<td>' + row[colName] + '</td>';
+                })
+
+                bodyRows += '</tr>';
+            });
+
+            $table.find('thead tr').append(headerRow);
+            $table.find('tbody').append(bodyRows);
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            var Drawingstable = $('#Drawingstable').DataTable({
+                dom: 't',
+                select: true,
+                'scrollX': true,
+                "paging": true,
+                "autoWidth": false,
+
+            }).draw();
+
+
+
+            var Documentstable = $('#Documentstable').DataTable({
+                dom: 't',
+                select: true,
+                'scrollX': true,
+                "paging": true,
+                "autoWidth": false,
+
+            }).draw();
+
+            var Modelstable = $('#Modelstable').DataTable({
+                dom: 't',
+                select: true,
+                'scrollX': true,
+                "paging": true,
+                "autoWidth": false,
+
+            }).draw();
+
+            var Otherstable = $('#Otherstable').DataTable({
+                dom: 't',
+                select: true,
+                'scrollX': true,
+                "paging": true,
+                "autoWidth": false,
+
+            }).draw();
+
+        });
+
+
+        document.querySelector('#SaveFileName').addEventListener('click', function () {
+            $.ajax({
+                type: "post",
+                url: "/Schedule/SaveMainModel",
+                data: {
+                    SaveFileName: document.getElementById('filenameInput').value
+                },
+                success: function (data) {
+                    alert(data.success);
+                },
+                error: function (data) {
+                    alert(data.error);
+                }
+            });
+        });
+
+    </script>
+    <script type="importmap">
+        {
+               "imports": {
+            "three": "../../../my-bim-app/node_modules/three/build/three.module.js",
+            "web-ifc": "../../../my-bim-app/node_modules/web-ifc/web-ifc-api.js",
+            "stats.js/src/Stats.js": "../../../my-bim-app/node_modules/stats.js/src/Stats.js",
+            "three/examples/jsm/libs/lil-gui.module.min": "../../../my-bim-app/node_modules/three/examples/jsm/libs/lil-gui.module.min.js",
+            "openbim-components": "../../Scripts/openbim-components.js",
+             "client-zip": "../../Scripts/index.js"
+          }
+        }
+    </script>
+    <script type="module">
+        // Set up scene (see SimpleScene tutorial)
+        // Set up scene (see SimpleScene tutorial)
+
+        import * as THREE from 'three';
+        import * as OBC from 'openbim-components';
+        import * as WEBIFC from 'web-ifc';
+        import Stats from 'stats.js/src/Stats.js';
+        import * as dat from 'three/examples/jsm/libs/lil-gui.module.min';
+        import { downloadZip } from 'client-zip';
+
+        const container = document.getElementById('container');
+
+        const components = new OBC.Components();
+
+        components.scene = new OBC.SimpleScene(components);
+        const renderer = new OBC.PostproductionRenderer(components, container);
+        //components.renderer = new OBC.SimpleRenderer(components, container);
+        components.renderer = renderer;
+        //components.camera = new OBC.SimpleCamera(components);
+        const camera = new OBC.OrthoPerspectiveCamera(components);
+        components.camera = camera;
+        camera.controls.setLookAt(10, 10, 10, 0, 0, 0);
+        await components.init();
+        components.raycaster = new OBC.SimpleRaycaster(components);
+        components.init();
+
+
+
+        renderer.postproduction.enabled = true;
+        const scene = components.scene.get();
+
+        components.camera.controls.setLookAt(12, 6, 8, 0, 0, -10);
+        components.scene.setup();
+
+        const grid = new OBC.SimpleGrid(components, new THREE.Color(0x666666));
+        //components.tools.add('grid', grid);
+        const gridMesh = grid.get();
+        renderer.postproduction.customEffects.excludedMeshes.push(gridMesh);
+
+        //Cubemap
+        const directionalLight = new THREE.DirectionalLight();
+        directionalLight.position.set(5, 10, 3);
+        directionalLight.intensity = 0.5;
+        scene.add(directionalLight);
+
+        const ambientLight = new THREE.AmbientLight();
+        ambientLight.intensity = 0.5;
+        scene.add(ambientLight);
+
+        const navCube = new OBC.CubeMap(components);
+        navCube.offset = 1;
+        navCube.setPosition("bottom-left");
+        camera.up;
+
+        //const grid = new OBC.SimpleGrid(components, new THREE.Color(0x666666));
+        //const gridMesh = grid.get();
+
+        //clipper
+        const clipper = new OBC.EdgesClipper(components);
+        //clipper.enabled = false;
+        container.ondblclick = () => clipper.create();
+        window.onkeydown = (event) => {
+            if (event.code === 'Delete' || event.code === 'Backspace') {
+                clipper.delete();
+            }
+        };
+
+        let fragments = new OBC.FragmentManager(components);
+
+        const ifcLoader = new OBC.FragmentIfcLoader(components);
+
+        ifcLoader.settings.wasm = {
+            path: "https://unpkg.com/web-ifc@0.0.46/",
+            absolute: true
+        }
+        const excludedCats = [
+            WEBIFC.IFCTENDONANCHOR,
+            WEBIFC.IFCREINFORCINGBAR,
+            WEBIFC.IFCREINFORCINGELEMENT,
+        ];
+
+        for (const cat of excludedCats) {
+            ifcLoader.settings.excludedCategories.add(cat);
+        }
+
+        ifcLoader.settings.webIfc.COORDINATE_TO_ORIGIN = true;
+        ifcLoader.settings.webIfc.OPTIMIZE_PROFILES = true;
+
+        const hexdata = document.getElementById("fileurl").value;
+
+        var byteArray = new Uint8Array(hexdata.length / 2);
+        for (var x = 0; x < byteArray.length; x++) {
+            byteArray[x] = parseInt(hexdata.substr(x * 2, 2), 16);
+        }
+
+        var blob = new Blob([byteArray], { type: "application/octet-stream" });
+
+        const file = blob;
+        const data = await file.arrayBuffer();
+        const buffer = new Uint8Array(data);
+        const model = await ifcLoader.load(buffer, "@TempData["ifcname"]");
+        scene.add(model);
+        $.ajax({
+            type: "post",
+            url: "/Schedule/GetAllLinkModel",
+            data: {
+                MainModel: document.getElementById('filenameInput').value,
+                ProjectName: document.getElementById('ProjectName').value
+            },
+            success: function (data) {
+                $("#iframeloading").hide();
+                var el = document.getElementById("Modeltree");
+                el.innerHTML = data.success;
+                //alert(data.success);
+
+            },
+            error: function (data) {
+                alert(data.error);
+            }
+        });
+
+
+        ifcLoader.onIfcLoaded.add(async (model) => {
+            propertiesProcessor.process(model);
+            highlighter.events.select.onHighlight.add((selection) => {
+                const fragmentID = Object.keys(selection)[0];
+                const expressID = Number([...selection[fragmentID]][0]);
+                propertiesProcessor.renderProperties(model, expressID);
+            });
+            highlighter.update();
+        });
+
+
+        const highlighter = new OBC.FragmentHighlighter(components)
+        highlighter.setup();
+
+
+        components.renderer.postproduction.customEffects.outlineEnabled = true;
+        highlighter.outlinesEnabled = true;
+
+
+        const customEffects = components.renderer.postproduction.customEffects;
+        customEffects.excludedMeshes.push(grid.get());
+
+        const effects = components.renderer.postproduction.customEffects;
+        effects.excludedMeshes.push(gridMesh);
+
+
+        const propertiesProcessor = new OBC.IfcPropertiesProcessor(components);
+        const propsManager = new OBC.IfcPropertiesManager(components);
+        propertiesProcessor.propertiesManager = propsManager;
+
+        propertiesProcessor.process(model);
+
+        propsManager.onRequestFile.add(async () => {
+            const fetched = await buffer;
+            propsManager.ifcToExport = await fetched.arrayBuffer();
+        })
+
+
+        components.renderer.postproduction.customEffects.outlineEnabled = true;
+        highlighter.outlinesEnabled = true;
+        highlighter.zoomToSelection = true;
+
+
+        const highlighterEvents = highlighter.events;
+        highlighterEvents.select.onClear.add(() => {
+            propertiesProcessor.cleanPropertiesList();
+        });
+
+        highlighterEvents.select.onHighlight.add(
+            (selection) => {
+                const fragmentID = Object.keys(selection)[0];
+                const expressID = Number([...selection[fragmentID]][0]);
+                let model
+                for (const group of fragments.groups) {
+                    const fragmentFound = Object.values(group.keyFragments).find(id => id === fragmentID)
+                    if (fragmentFound) model = group;
+                }
+                propertiesProcessor.renderProperties(model, expressID);
+            }
+        );
+
+
+        const propsFinder = new OBC.IfcPropertiesFinder(components);
+        await propsFinder.init();
+        //propsFinder.uiElement.get("queryWindow").visible = true;
+        propsFinder.onFound.add(result => {
+            highlighter.highlightByID("select", result);
+        })
+
+        //modelTree
+        const modelTree = new OBC.FragmentTree(components);
+        await modelTree.init();
+        modelTree.update(['storeys', 'entities']);
+        modelTree.onSelected.add((filter) => {
+            highlighter.highlightByID('select', filter, true, true);
+        });
+        modelTree.onHovered.add((filter) => {
+            highlighter.highlightByID('hover', filter);
+        });
+
+        function disposeFragments() {
+            fragments.dispose();
+        }
+        const disposeButton = new OBC.Button(components);
+        disposeButton.materialIcon = "delete";
+        disposeButton.tooltip = "Delete model";
+        //toolbar.addChild(disposeButton);
+        disposeButton.onClick.add(() => disposeFragments());
+
+        const mainToolbar = new OBC.Toolbar(components, { name: 'Main Toolbar', position: 'bottom' })
+        mainToolbar.addChild(
+            //ifcLoader.uiElement.get("main"),
+            propertiesProcessor.uiElement.get("main"),
+            clipper.uiElement.get("main"),
+            modelTree.uiElement.get("main"),
+            camera.uiElement.get("main"),
+            fragments.uiElement.get("main"),
+            propsFinder.uiElement.get("main")
+        )
+        components.ui.addToolbar(mainToolbar)
+
+
+                                    //const stats = new Stats();
+                                    //stats.showPanel(2);
+                                    //document.body.append(stats.dom);
+                                    //stats.dom.style.left = '0px';
+                                    ////const renderer = components.renderer;
+                                    //renderer.onBeforeUpdate.add(() => stats.begin());
+                                    //renderer.onAfterUpdate.add(() => stats.end());
+    </script>
+</body>

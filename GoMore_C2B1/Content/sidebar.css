@@ -1,0 +1,129 @@
+﻿.sidebar {
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    z-index: 1001;
+    top: 0;
+    left: 0;
+    opacity: .9;
+    overflow-x: hidden;
+    padding-top: 60px;
+    box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
+    /* transition: 0.5s; */
+}
+
+    .sidebar a {
+        display: block;
+        padding: 20px 30px;
+        font-size: 16px;
+        font-weight: 500;
+        text-decoration: none;
+        color: black;
+    }
+
+.sidebar-content {
+    padding-top: 30px;
+}
+
+.sidebar-content a{
+    align-items: center;
+}
+
+    .sidebar-content a:hover {
+        background-color: var(--hover-color);
+        margin: 0 5px 0 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+.sidebar i {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.dropdown-wrapper {
+    margin-top: 10px;
+}
+
+    .dropdown-wrapper button {
+        width: 250px;
+        background-color: transparent;
+        border: none;
+        padding: 20px 30px;
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--font-color);
+        display: flex;
+        justify-content: flex-start;
+        margin-left: 0px;
+        align-items: center;
+    }
+
+        .dropdown-wrapper button:hover {
+            background-color: var(--hover-color);
+            margin: 0 5px 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+#sidebar-dropdown-menu {
+    position: static;
+    float: none;
+    background-color: transparent;
+    padding: 0;
+    border: none;
+}
+
+    #sidebar-dropdown-menu a {
+        padding: 20px 20px;
+        font-weight: 500;
+        font-size: 16px;
+        margin-left: 15px;
+    }
+
+        #sidebar-dropdown-menu a:hover {
+            background-color: var(--hover-color);
+            margin: 0 5px 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+    .show {
+        display: block;
+    }
+
+.logo-gomore {
+    position: absolute;
+    top: -30px;
+    left: 0px;
+    width: 10px;
+    height: 10px;
+    font-size: 10px;
+}
+
+.dropdown-wrapper {
+    width: 100%;
+}
+
+.dropdown-toggle {
+    width: 200px;
+}
+
+.sidebar-navigation {
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0;
+    height: 100%;
+    width: 65px;
+    z-index: 10;
+    box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
+    background-color: var(--sidebar-color);
+}
+
+

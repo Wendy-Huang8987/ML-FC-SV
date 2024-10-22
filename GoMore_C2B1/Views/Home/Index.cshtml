@@ -1,0 +1,111 @@
+﻿@{ ViewBag.Title = "Home Page"; }
+@using GoMore_C2B1.Resource;
+
+@Styles.Render("~/Content/main")
+@Styles.Render("~/Content/DarkMode")
+@Styles.Render("~/Content/home")
+
+<main id="content" style="margin-left: 65px; margin-top: 0px;">
+    <div class="home-page">
+        <div class="home-container">
+            <div class="home-header">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" style="width: 100%; max-height: 750px;" src="~/test-3.jpg" alt="First slide" />
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" style="width: 100%; max-height: 750px;" src="~/test-4.jpg" alt="Second slide">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100" style="width: 100%; max-height: 750px;" src="~/test-5.jpg" alt="Third slide">
+                        </div>
+                    </div>
+                    <div class="carousel-prev-container">
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" style="text-decoration: none;">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only" style="font-weight: 600; color: white;">@Resource.Previous</span>
+                        </a>
+                    </div>
+                    <div class="carousel-next-container">
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" style="text-decoration: none;">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only" style="font-weight: 600; color: white;">@Resource.Next</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="home-title">
+                    <h2>GoMore @Resource.Dashboard</h2>
+                </div>
+
+            </div>
+            <div class="home-body">
+                <div class="home-body-container">
+                    <div>
+                        <h2>@Resource.FeaturesDescription</h2>
+                    </div>
+                    <div class="body-container-wrapper">
+                        <div class="home-body-content">
+                            <i class="bi bi-folder"></i>
+                            <label>@Resource.Library</label>
+                            <p style="padding: 10px 20px; margin-top: 10px;">@Resource.LibraryFeatures</p>
+                        </div>
+                        <div class="home-body-content">
+                            <i class="bi bi-gear-wide-connected"></i>
+                            <label>@Resource.Factory</label>
+                            <p style="padding: 10px 20px; margin-top: 10px;">@Resource.FactoryFeatures</p>
+
+                        </div>
+                        <div class="home-body-content">
+                            <i class="bi bi-calendar3"></i>
+                            <label>@Resource.Schedule</label>
+                            <p style="padding: 10px 20px; margin-top: 10px;">@Resource.ScheduleFeatures</p>
+                        </div>
+                        <div class="home-body-content">
+                            <i class="bi bi-headset"></i>
+                            <label>@Resource.ContactUs</label>
+                            <p style="padding: 10px 20px; margin-top: 10px;">@Resource.ContactUsFeatures</p>
+                        </div>
+                        <div class="home-body-content">
+                            <i class="bi bi-folder-fill"></i>
+                            <label>@Resource.Library</label>
+                            <p style="padding: 10px 20px; margin-top: 10px;">???</p>
+                        </div>
+                        <div class="home-body-content">
+                            <i class="bi bi-people"></i>
+                            <label>@Resource.AboutUs</label>
+                            <p style="padding: 10px 20px; margin-top: 10px;">???</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+
+    </div>
+    <button onclick="topFunction()" id="backtoTopBtn" title="Go to top"><i class="bi bi-arrow-up"></i></button>
+</main>
+<script>
+    // Get the button:
+    let mybutton = document.getElementById("backtoTopBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+<script src="~/Scripts/main.js"></script>

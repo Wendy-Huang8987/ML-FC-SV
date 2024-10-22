@@ -1,0 +1,275 @@
+﻿@{
+    ViewBag.Title = "ModelManagement";
+}
+@using GoMore_C2B1.Resource;
+
+@Styles.Render("~/Content/main")
+@Styles.Render("~/Content/DarkMode")
+
+<div id="content" style="margin-left: 65px; margin-top: 0px;">
+    <div class="user-wrapper">
+        <div class="user-header">
+            <h2>@Resource.Modelmanager</h2>
+            <div style="display: flex; align-items: center;">
+                <button class="add-userbtn" data-toggle="modal" data-target="#AddUserModal">Add Model</button>
+            </div>
+        </div>
+        <div class="user-body">
+            <table class="table table-striped table-bordered" id="modelTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Model Name</th>
+                        <th scope="col">Belongings</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Date Created</th>
+                        <th scope="col">@Resource.Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row">Model 1</td>
+                        <td>Jerry</td>
+                        <td>B10902205@mail.ntust.edu.tw</td>
+                        <td>2/27/2024</td>
+                        <td style="display: flex; justify-content: space-between">
+                            <select>
+                                <option>Change Belongings</option>
+                                <option>???</option>
+                                <option>???</option>
+                            </select>
+                            <button type="submit" style="
+                            border: 1px solid var(--font-color);
+                            margin-left: 5px;
+                            padding: 10px 14px;">
+                                @Resource.Edit
+                            </button>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td scope="row">Model 1</td>
+                        <td>Jerry</td>
+                        <td>B10902205@mail.ntust.edu.tw</td>
+                        <td>2/27/2024</td>
+                        <td style="display: flex; justify-content: space-between">
+                            <select>
+                                <option>Change Belongings</option>
+                                <option>???</option>
+                                <option>???</option>
+                            </select>
+                            <button type="submit" style="
+                            border: 1px solid var(--font-color);
+                            margin-left: 5px;
+                            padding: 10px 14px;">
+                                @Resource.Edit
+                            </button>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td scope="row">Model 1</td>
+                        <td>Jerrdwadsay</td>
+                        <td>B10902205@mail.ntust.edu.tw</td>
+                        <td>2/27/2024</td>
+                        <td style="display: flex; justify-content: space-between">
+                            <select>
+                                <option>Change Belongings</option>
+                                <option>???</option>
+                                <option>???</option>
+                            </select>
+                            <button type="submit" style="
+                            border: 1px solid var(--font-color);
+                            margin-left: 5px;
+                            padding: 10px 14px;">
+                                @Resource.Edit
+                            </button>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td scope="row">Model 1</td>
+                        <td>Jerdsawdy</td>
+                        <td>B10902205@mail.ntust.edu.tw</td>
+                        <td>2/27/2024</td>
+                        <td style="display: flex; justify-content: space-between">
+                            <select>
+                                <option>Change Belongings</option>
+                                <option>???</option>
+                                <option>???</option>
+                            </select>
+                            <button type="submit" style="
+                            border: 1px solid var(--font-color);
+                            margin-left: 5px;
+                            padding: 10px 14px;">
+                                @Resource.Edit
+                            </button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <ul class="pagination justify-content-center" id="ModelManagementpagination">
+                <li class="page-item"><a class="page-link" href="#" aria-label="Previous">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#" aria-label="Next">Next</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="AddUserModal" tabindex="-1" role="dialog" aria-labelledby="AddUserModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 735px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="adduser-wrapper">
+                    <form id="userForm" class="adduserForm">
+
+                        <h2>Add Model</h2>
+
+                        <div class="input-box">
+                            <label for="name">Model Name*</label>
+                            <input type="text" id="name" name="name">
+                        </div>
+                        <div class="input-box">
+                            <label for="belonging">Belongs to*</label>
+                            <input type="text" id="belonging" name="belonging">
+                        </div>
+                        <div class="input-box">
+                            <label for="email">Email*</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                        <div class="adduser-submitbtn">
+                            <button type="submit">Submit</button>
+                        </div>
+
+                    </form>
+
+
+                </div>
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Form submission
+    var form = document.getElementById("userForm");
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var belonging = document.getElementById("belonging").value;
+        var table = document.getElementById("userTable").getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.rows.length);
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        var cell4 = newRow.insertCell(3);
+        var cell5 = newRow.insertCell(4);
+
+        cell1.innerHTML = name;
+        cell2.innerHTML = belonging;
+        cell3.innerHTML = email;
+        cell4.innerHTML = null;
+        cell5.innerHTML = null;
+
+        form.reset(); // Reset form fields
+    });
+
+    // Upload Pagination
+    document.addEventListener("DOMContentLoaded", function () {
+        const table = document.getElementById("modelTable");
+        const rowsPerPage = 2; // Adjust this value based on the number of rows you want per page
+
+        // Calculate the total number of pages
+        const totalRows = table.tBodies[0].rows.length;
+        const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+        // Initialize current page
+        let currentPage = 1;
+
+        function showPage(page) {
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+
+            // Hide all rows
+            for (let i = 0; i < totalRows; i++) {
+                table.tBodies[0].rows[i].style.display = "none";
+            }
+
+            // Show the rows for the current page
+            for (let i = start; i < Math.min(end, totalRows); i++) {
+                table.tBodies[0].rows[i].style.display = "";
+            }
+        }
+
+        function updatePagination() {
+            const paginationContainer = document.getElementById("ModelManagementpagination");
+            paginationContainer.innerHTML = ""; // Clear existing pagination links
+
+            // Previous button
+            const previousButton = document.createElement("li");
+            previousButton.className = "page-item";
+            const previousLink = document.createElement("a");
+            previousLink.className = "page-link";
+            previousLink.href = "#";
+            previousLink.textContent = "@Resource.Previous";
+            previousLink.addEventListener("click", function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    showPage(currentPage);
+                }
+            });
+            previousButton.appendChild(previousLink);
+            paginationContainer.appendChild(previousButton);
+
+            // Page buttons
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement("li");
+                pageButton.className = "page-item";
+                const pageLink = document.createElement("a");
+                pageLink.className = "page-link";
+                pageLink.href = "#";
+                pageLink.textContent = i;
+                pageLink.addEventListener("click", function () {
+                    currentPage = i;
+                    showPage(currentPage);
+                });
+                pageButton.appendChild(pageLink);
+                paginationContainer.appendChild(pageButton);
+            }
+
+            // Next button
+            const nextButton = document.createElement("li");
+            nextButton.className = "page-item";
+            const nextLink = document.createElement("a");
+            nextLink.className = "page-link";
+            nextLink.href = "#";
+            nextLink.textContent = "@Resource.Next";
+            nextLink.addEventListener("click", function () {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    showPage(currentPage);
+                }
+            });
+            nextButton.appendChild(nextLink);
+            paginationContainer.appendChild(nextButton);
+
+            // Show the initial page
+            showPage(currentPage);
+        }
+
+        // Initial setup
+        updatePagination();
+    });
+</script>

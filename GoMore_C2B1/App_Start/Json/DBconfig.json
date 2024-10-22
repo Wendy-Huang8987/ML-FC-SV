@@ -1,0 +1,7 @@
+{
+  "dbhost": "localhost",
+  "dbport": "5432",
+  "dbdatabase": "BIES_C1",
+  "dbusername": "postgres",
+  "dbpass": "!Ntustcc123"
+}

@@ -1,0 +1,187 @@
+﻿@model IEnumerable<GoMore_C2B1.Models.Objectmodel>
+@{
+    ViewBag.Title = "ObjectDetail";
+}
+@using GoMore_C2B1.Resource;
+@using GoMore_C2B1.Models;
+@{
+    List<Objectmodel> objs = ViewBag.obj;
+    List<CommentModel> comments = ViewBag.com;
+    List<string> name = ViewBag.specs;
+}
+@Styles.Render("~/Content/main")
+@Styles.Render("~/Content/DarkMode")
+@Styles.Render("~/Content/objectdetail")
+@Styles.Render("~/Content/nicepage")
+<head>
+<script src="https://kit.fontawesome.com/27314dfa20.js" crossorigin="anonymous"></script>
+</head>
+<p id="Permission_" hidden="hidden">@HttpContext.Current.Session["Account"].ToString()</p>
+<section id="content" style="margin-left: 65px; margin-top: 0px;">
+    @foreach (Objectmodel obj in objs)
+    {
+        <section class="u-clearfix u-section-1" id="sec-89bc">
+            <div class="u-clearfix u-sheet u-sheet-1">
+                <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
+                    <div class="u-layout">
+                        <div class="u-layout-row">
+                            <div class="u-container-style u-layout-cell u-size-29 u-layout-cell-1">
+                                <div class="u-container-layout u-container-layout-1">
+                                    <p class="u-text u-text-default u-text-1"><a href="~/Home/Index">Home</a> &gt;<a href="/Library/Category?ObjectCategory=@obj.ObjectCategory"> @obj.ObjectCategory </a>&gt; @obj.ObjectName</p>
+                                    <img class="u-image u-image-contain u-image-round u-radius-10 u-image-1" src="data:image/png;base64,@obj.ObjectImage" alt="" data-image-width="675" data-image-height="675">
+                                    <div class="u-form u-form-1" id="btn_flex" >
+                                        <div>
+                                            <button id="button_trigger" class="btn btn-light" style="display: none;"><i class="fa-solid fa-cubes"></i></button>
+                                        </div>
+                                        <div id="preloader" style="display:none"><div id=status>&nbsp;</div></div>
+                                        <div style="margin:70px 0">
+                                            <form method="get" action="/Library/threeD">
+                                                <div class="u-form-group u-form-select u-label-top u-form-group-1" style="width:150px">
+                                                    <button name="ObjectName" value="@obj.ObjectName" class="btn btn-light" id="modelbtn"style="display: block; margin: 30px;">@Resource.CheckModel</button>
+                                                    <input type="hidden" name="ReleaseDate" value="@obj.ReleaseDate">
+                                                    <input type="hidden" name="Country" value="@obj.Country">
+                                                    <input type="hidden" name="Author" value="@obj.Author">
+                                                </div>
+                                            </form>
+                                            <input type="hidden" name="fileurl" value="@TempData["Url"]" id="fileurl">
+                                        </div>
+                                        <div style="margin:70px 0">
+                                            <form method="get" action="/Library/Download">
+                                                <button name="ObjectName" id="DownloadBtn" style="display: none; margin:30px; " value="@obj.ObjectName" class="u-border-none u-btn u-btn-round u-button-style u-radius-15 u-btn-2">@Resource.Download</button>
+                                                <input type="hidden" name="ReleaseDate" value="@obj.ReleaseDate">
+                                                <input type="hidden" name="Country" value="@obj.Country">
+                                                <input type="hidden" name="Author" value="@obj.Author">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="u-container-style u-layout-cell u-size-31 u-layout-cell-2">
+                                <div class="u-container-layout u-container-layout-2">
+                                    <div class="u-absolute-hcenter-xs u-border-1 u-border-palette-5-dark-1 u-line u-line-horizontal u-line-1"></div>
+                                    <p class="u-text u-text-default u-text-2">@obj.Owner / @obj.OrganizationOfAuthor</p>
+                                    <h1 class="u-text u-text-default u-text-3">
+                                        @obj.ObjectName&nbsp;&nbsp;<span class="u-file-icon u-icon u-icon-4"><img src="~/Images/5662990.png" alt=""></span>
+                                    </h1>
+                                    <p class="u-align-justify u-text u-text-4">@obj.ObjectIntroduction</p>
+                                    <div class="u-border-1 u-border-palette-5-dark-1 u-line u-line-horizontal u-line-2"></div>
+                                    <p class="u-align-justify-lg u-align-justify-md u-align-justify-xl u-small-text u-text u-text-variant u-text-5">@Resource.Date_of_publishing:@obj.ReleaseDate.Split('_')[0]<br> @Resource.Version: @obj.VersionNumber</p>
+                                    <p class="u-align-justify-lg u-align-justify-md u-align-justify-xl u-small-text u-text u-text-default u-text-variant u-text-6">
+                                        <span class="u-file-icon u-icon u-icon-5"><img src="~/Images/5948565.png" alt=""></span>&nbsp;&nbsp;@comments.Count
+                                    </p>
+                                    @*<p class="u-align-justify-lg u-align-justify-md u-align-justify-xl u-small-text u-text u-text-variant u-text-7">
+                                            <span class="u-file-icon u-icon u-icon-6"><img src="~/Images/1077035.png" alt=""></span>&nbsp;&nbsp;4.6k
+                                        </p>*@
+
+                                    <div class="u-clearfix u-custom-html u-custom-html-1">
+                                        <div class="expand-collapse">
+                                            <h4>@Resource.Model_Information</h4>
+                                            <div>
+                                                <p>@Resource.Height:@obj.Height</p>
+                                                <p>@Resource.Width:@obj.Width</p>
+                                                <p>@Resource.Depth:@obj.Depth</p>
+                                                <p>@Resource.Unit:@obj.Unit</p>
+                                            </div>
+                                            <h4>@Resource.Product_Accessories</h4>
+                                            <div>
+                                                <p>@obj.ProductMaterialStructure</p>
+                                            </div>
+                                            <h4>@Resource.FileType</h4>
+                                            <div>
+                                                <p>@obj.InstallSpecification</p>
+                                            </div>
+                                            <h4>@Resource.Software_Specifications</h4>
+
+                                            <div>
+                                                @foreach (string spec in name)
+                                                {
+                                                    <p>@spec</p>}
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="popup_box">
+                                <div class="cd-popup">
+                                    <div id="element_windows">
+                                        <a class="cd-popup-close" href="#">&times;</a>
+                                        <canvas id="three-canvas"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>}
+    @foreach (Objectmodel obj in objs)
+    {
+        <form method="post" action="/Library/UploadComment" style="padding: 25px;">
+            <div class="u-form-group u-form-name u-form-partition-factor-2 u-label-top">
+                <label for="name-3b9a" class="u-label">@Resource.Comment</label>
+                <input type="text" placeholder="@Resource.Enter_Comment" id="name-3b9a" name="CommentMsg" class="u-input u-input-rectangle u-radius-15" required="">
+            </div>
+            <div class="u-align-center u-form-group u-form-submit u-label-top">
+                <button type="submit">@Resource.Comment</button>
+                <input name="ObjectName" value="@obj.ObjectName" type="hidden">
+                <input name="ReleaseDate" value="@obj.ReleaseDate" type="hidden">
+                <input name="Author" value="@obj.Author" type="hidden">
+            </div>
+        </form>}
+    <h3 class="u-text u-text-1">@Resource.Comment_Area</h3>
+
+    @foreach (CommentModel comment in comments)
+    {
+        <section class="u-clearfix u-grey-5 u-section-2" style="height: 150px;">
+            <div class="u-clearfix u-sheet u-sheet-1">
+                <div class="u-border-2 u-border-grey-dark-1 u-expanded-width u-line u-line-horizontal u-line-1"></div>
+                <p class="u-text u-text-2">@comment.CommentUser</p>
+                <p class="u-align-right u-text u-text-3" id="@comment.CommentTime">
+                    @comment.CommentTime
+                    <script>
+import { convertArray } from "three/src/animation/AnimationUtils";
+
+                        var sysUTCTime = "/******************/" ;
+                        var UTCTime = sysUTCTime + " " + "UTC";
+                        var UTCTimeObj = new Date(UTCTime);
+                        var div = document.getElementById("/******************/");
+                        div.innerHTML = UTCTimeObj.toLocaleString('zh-TW', { hourCycle: 'h23', year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).replace(",", " "@comment.CommentTime@comment.CommentTime</script>
+                </p>
+                <p class="u-text u-text-4">@comment.CommentMsg</p>
+                <a class="u-border-1 u-border-active-palette-2-base u-border-hover-palette-1-base u-border-no-left u-border-no-right u-border-no-top u-btn u-button-style u-none u-text-palette-1-base u-btn-1">@comment.CommentUserEmail</a>
+            </div>
+        </section>}
+</section>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/Download")
+<script type="module" src="../bundle.js"></script>
+<script type="text/javascript">
+             jQuery(document).ready(function ($) {
+            //open popup
+            $('#button_trigger').on('click', function (event) {
+                event.preventDefault();
+                $('.cd-popup').addClass('is-visible');
+            });
+
+            //close popup
+            $('.cd-popup').on('click', function (event) {
+                if ($(event.target).is('.cd-popup-close') || $(event.target).is('.element_box')) {
+                    event.preventDefault();
+                    $(this).removeClass('is-visible');
+                }
+            });
+            //close popup when clicking the esc keyboard button
+            $(document).keyup(function (event) {
+                if (event.which == '27') {
+                    $('.element_box').removeClass('is-visible');
+                }
+            });
+            $('#modelbtn').on('click', function () {
+                $("#preloader").css("display", "block");
+                console.log("test")
+
+            });
+        });
+</script>

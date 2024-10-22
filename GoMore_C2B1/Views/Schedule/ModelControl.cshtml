@@ -1,0 +1,375 @@
+﻿@using GoMore_C2B1.Models;
+@{
+    ViewBag.Title = "ModelControl";
+    List<SVModelControl> sVModels = ViewBag.ModelProject;
+}
+@Styles.Render("~/Content/main")
+@Styles.Render("~/Content/DarkMode")
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="~/Content/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>ModelControl</title>
+</head>
+
+
+<body>
+
+    <div id="content" style="margin-left: 65px;">
+        <section id="model-library">
+            <div class="library-wrapper">
+                <div class="library-container flex-column">
+                    <div class="library-body">
+                        <div class="library-content-add" id="add">
+                            <a href="#" class="library-add" data-toggle="modal" data-target="#uploadmodelModal"><i class="bi bi-plus-lg"></i></a>
+                        </div>
+                        @foreach (SVModelControl sVModel in sVModels)
+                        {
+                            if (Session["Account"] != null)
+                            {
+                                if (sVModel.Author.Equals(Session["Account"]) || sVModel.Permit.Split('*').Contains(Session["Account"]) || sVModel.ModelType.Equals("Public") )
+                                {
+                            <div class="library-content">
+                                <div class="library-like">@sVModel.ModelType</div>
+                                <button class="library-download" value="@sVModel.ProjectName*@sVModel.Author*@Session["Account"]*@sVModel.ModelName" onclick="setting(this.value)">@sVModel.ProjectName</button>
+                                <form method="post" action="~/Schedule/DisplayProject">
+                                    <input name="ProjectName" value="@sVModel.ProjectName" hidden>
+                                    <input name="ModelName" value="@sVModel.ModelName" hidden>
+                                    <button type="submit"><img src="data:image/*;base64, @sVModel.ImageUrl"></button>
+                                </form>
+                                <button class="library-user" value="@sVModel.Permit" onclick="SetPermit(this.value)"><i class="bi bi-person-square"></i> @sVModel.Author </button>
+                            </div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="modal fade" id="uploadmodelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 735px;" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button type="button" class="btn-close position-absolute mt-1 me-1 top-0 end-0 bg-light" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="register-wrapper ">
+                            <div class="">
+                                <h2>Upload Model</h2>
+                                <div class="input-box">
+                                    <label>Upload Image</label>
+                                    <div>
+                                        <input class="" type="file" id="ModelImage" accept="image/*" />
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <label>Upload Model</label>
+                                    <div>
+                                        <input type="file" id="file2frag" accept=".ifc" />
+                                    </div>
+                                </div>
+                                <div class="input-box">
+                                    <label class="">Model Name *</label>
+                                    <input type="text" id="ModelName" placeholder="" class="" required />
+                                </div>
+                                <div class="input-box">
+                                    <label>Author *</label>
+                                    <input type="text" id="Author" value="@Session["Account"]" required />
+                                </div>
+                                <div class="input-box">
+                                    <label class="">ProjectName *</label>
+                                    <input type="text" id="ProjectName" placeholder="" />
+                                </div>
+                                <div class="input-box">
+                                    <label class="">Select Type of Model *</label>
+                                    <select name="ModelType" id="ModelType">
+                                        <option value="Private">Private</option>
+                                        <option value="Public">Public</option>
+                                    </select>
+                                </div>
+                                <div class="input-box">
+                                    <label class="">Upload Link Model Permit *</label>
+                                    <input type="email" id="Permit" placeholder="" />
+                                </div>
+                                <div class="register-btn d-flex justify-content-center">
+                                    <button id="filedata">Upload</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="container" hidden></div>
+    </div>
+    <dialog id="SettingDialog" style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 30px;
+        border: 1px solid var(--font-color);
+        border-radius: 10px;
+        box-shadow: 10px 5px 5px black;
+        background-color:aliceblue;
+        ">
+        Project Name:
+        <input type="text" name="ProjectName" id="ProjectNameDialog" readonly />
+        <br>Author:
+        <input type="text" id="AuthorDialog" readonly />
+        <br>
+        <br>
+        <br>
+        <form method="post" action="~/Schedule/DisplayProject">
+            <input name="ProjectName" id="ProjectNameViewDialog" hidden>
+            <input name="ModelName" id="ModelNameDialog" hidden>
+            <label id="MainModelName"></label><button type="submit" style="float: right;"> Main Model</button>
+        </form>
+        <br>
+        <div id="UnitsForm">
+            </div>
+        <br>
+        <button class="form-control btn" onclick="SettingDialog.close();">close</button>
+    </dialog>
+
+    <script>
+        function SetPermit(value){
+        alert(value);
+        }
+        function setting(projectNameNauthor) {
+            var projectName = projectNameNauthor.split("*")[0];
+            var Author = projectNameNauthor.split("*")[1];
+            var Account = projectNameNauthor.split("*")[2];
+            var ModelName = projectNameNauthor.split("*")[3];
+            document.getElementById('MainModelName').innerHTML = ModelName;
+
+            document.getElementById("ProjectNameDialog").value = projectName;
+            document.getElementById("AuthorDialog").value = Author;
+            document.getElementById("ProjectNameViewDialog").value = projectName;
+            document.getElementById("ModelNameDialog").value = ModelName;
+            document.getElementById('UnitsForm').innerHTML = "";
+                $.ajax({
+                type: "post",
+                url: "/Schedule/GetAllProjectUnit",
+                data: {
+                    ProjectName: projectName,
+                },
+                success: function (data) {
+                    data.success.forEach(function countEntry(item) {
+                    document.getElementById('UnitsForm').innerHTML += '<form method="post" action="/Schedule/DisplayModel"><label >'+item.LinksUnit+'</label><input name="ID" value="'+item.ID+'" hidden><button type="submit" style="float: right;"> View Model</button></form>';
+                    }
+                    );
+                },
+                error: function (data) {
+                    alert(data.error);
+                }
+            });
+            var SettingDialog = document.getElementById("SettingDialog");
+            SettingDialog.showModal();
+    }
+
+    $('#file2frag').on('change', function () {
+        var fullPath = document.getElementById('file2frag').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = filename.substring(1);
+            }
+        }
+        document.getElementById("ModelName").value = filename.split('.')[0];
+    });
+    </script>
+    <script type="importmap">
+        {
+               "imports": {
+            "three": "../../../my-bim-app/node_modules/three/build/three.module.js",
+            "web-ifc": "../../../my-bim-app/node_modules/web-ifc/web-ifc-api.js",
+            "stats.js/src/Stats.js": "../../../my-bim-app/node_modules/stats.js/src/Stats.js",
+            "three/examples/jsm/libs/lil-gui.module.min": "../../../my-bim-app/node_modules/three/examples/jsm/libs/lil-gui.module.min.js",
+            "openbim-components": "../../Scripts/openbim-components2.js",
+             "client-zip": "../../Scripts/index.js"
+          }
+        }
+    </script>
+    <script type="module">
+        // Set up scene (see SimpleScene tutorial)
+        // Set up scene (see SimpleScene tutorial)
+
+        import * as THREE from 'three';
+        import * as OBC from 'openbim-components';
+        import * as WEBIFC from 'web-ifc';
+        import Stats from 'stats.js/src/Stats.js';
+        import * as dat from 'three/examples/jsm/libs/lil-gui.module.min';
+        import { downloadZip } from 'client-zip';
+        const container = document.getElementById('container');
+
+        const components = new OBC.Components();
+
+        components.scene = new OBC.SimpleScene(components);
+        components.renderer = new OBC.PostproductionRenderer(components, container);
+        components.camera = new OBC.SimpleCamera(components);
+        components.raycaster = new OBC.SimpleRaycaster(components);
+
+        components.init();
+
+        components.renderer.postproduction.enabled = true;
+
+        const scene = components.scene.get();
+
+        components.camera.controls.setLookAt(12, 6, 8, 0, 0, -10);
+
+        components.scene.setup();
+
+        const grid = new OBC.SimpleGrid(components, new THREE.Color(0x666666));
+        //components.tools.add('grid', grid);
+        const gridMesh = grid.get();
+        const customEffects = components.renderer.postproduction.customEffects;
+        customEffects.excludedMeshes.push(grid.get());
+
+        let fragments = new OBC.FragmentManager(components);
+        let fragmentIfcLoader = new OBC.FragmentIfcLoader(components);
+
+
+        const mainToolbar = new OBC.Toolbar(components, { name: 'Main Toolbar', position: 'bottom' });
+        components.ui.addToolbar(mainToolbar);
+        const ifcButton = fragmentIfcLoader.uiElement.get("main");
+        mainToolbar.addChild(ifcButton);
+
+        const propertiesProcessor = new OBC.IfcPropertiesProcessor(components);
+        const propsManager = new OBC.IfcPropertiesManager(components);
+
+
+        fragmentIfcLoader.settings.wasm = {
+            path: "https://unpkg.com/web-ifc@0.0.46/",
+            absolute: true
+        }
+
+
+        const excludedCats = [
+            WEBIFC.IFCTENDONANCHOR,
+            WEBIFC.IFCREINFORCINGBAR,
+            WEBIFC.IFCREINFORCINGELEMENT,
+        ];
+
+        for (const cat of excludedCats) {
+            fragmentIfcLoader.settings.excludedCategories.add(cat);
+        }
+
+
+        fragmentIfcLoader.settings.webIfc.COORDINATE_TO_ORIGIN = true;
+        fragmentIfcLoader.settings.webIfc.OPTIMIZE_PROFILES = true;
+
+
+        let button = document.getElementById('filedata');
+        button.addEventListener('click', run);
+        async function run() {
+            var modelImage = document.getElementById("ModelImage").files[0];
+            var filedata = document.getElementById("file2frag").files[0];
+            var Author = document.getElementById("Author").value;
+            var ProjectName = document.getElementById("ProjectName").value;
+            var Permit = document.getElementById("Permit").value;
+            var ModelType = document.getElementById("ModelType").value;
+
+            const file = filedata;
+            const data = await file.arrayBuffer();
+            const buffer = new Uint8Array(data);
+            const model = await fragmentIfcLoader.load(buffer, filedata.name);
+            scene.add(model);
+
+            propertiesProcessor.propertiesManager = propsManager;
+            propertiesProcessor.process(model);
+
+            exportFragments(Author, ProjectName, file, filedata.name.split('.')[0], Permit, modelImage,ModelType);
+            disposeFragments();
+        }
+
+
+        async function exportFragments(Author, ProjectName, file, name, Permit, modelImage,ModelType) {
+            if (!fragments.groups.length) return;
+            const group = fragments.groups[0];
+            const data = fragments.export(group);
+            const blob = new Blob([data]);
+            const fragmentFile = new File([blob], name + ".frag");
+
+            const files = [];
+            files.push(file);
+            files.push(fragmentFile);
+            files.push(new File([JSON.stringify(group.properties)], name + ".json"));
+            //const result = await downloadZip(files).blob();
+            //result.name = 'example';
+            //alert(files);
+            //download(result);
+            var file = files;
+
+            // Create FormData object
+            var fileData = new FormData();
+
+            // Looping over all files and add it to FormData object
+            for (var i = 0; i < file.length; i++) {
+                fileData.append(file[i].name, file[i]);
+            }
+
+            // Adding one more key to FormData object
+            fileData.append(name, modelImage);
+            fileData.append('ImageName', modelImage.name);
+            fileData.append('Permit', Permit);
+            fileData.append('ModelName', name);
+            fileData.append('Author', Author);
+            fileData.append('ProjectName', ProjectName);
+            fileData.append('ModelType', ModelType);
+            $.ajax({
+                url: "/Schedule/UploadModel",
+                type: "post",
+                contentType: false, // Not to set any content header
+                processData: false, // Not to process data
+                data: fileData,
+                success: function (result) {
+                    alert(result);
+                    document.getElementById("ProjectName").value = "";
+                    document.getElementById("Permit").value = "";
+                    document.getElementById("file2frag").value = "";
+                    document.getElementById("ModelName").value = "";
+                    document.getElementById("ModelImage").value = "";
+                    location.reload();
+
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+
+        }
+
+        /*MD
+        Now, this is how the download function looks like:
+        */
+
+        function download(file) {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(file);
+            link.download = file.name;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+
+
+        function disposeFragments() {
+            fragments.dispose();
+        }
+
+    </script>
+
+    <script src="~/Scripts/main.js"></script>
+</body>
