@@ -1,4 +1,5 @@
 ﻿@using GoMore_C2B1.Models;
+@Styles.Render("~/Content/main")
 @Styles.Render("~/Content/DarkMode")
 @using GoMore_C2B1.Resource;
 <head>
@@ -93,7 +94,7 @@
     <div id="iframeloading" style="display: none; position: absolute; z-index:99999999; top: 0px; left: 0px; width: 100%; height: 100%;">
         <img src="~/AnimatedProgressBar.gif" alt="loading" style="width: 270px; height: 150px; position: absolute; left: 50%; top: 50%; margin: -75px 0 0 -135px;" />
     </div>
-    <div style="width: 400px; height: 94vh; overflow-y: scroll; z-index: 9999; position: absolute; background-color: black; color: aliceblue; right: 0;">
+    <div style="width: 400px; height: 94vh; overflow-y: scroll; z-index: 1; position: absolute; background-color: black; color: aliceblue; right: 0;">
         <input id="fileurl" value="@TempData["ifcFile"]" hidden>
         <input id="jsondata" value="@TempData["json"]" hidden>
         <input id="ProjectName" value="@TempData["ProjectName"]" hidden>
@@ -640,10 +641,10 @@
 
         const mainToolbar = new OBC.Toolbar(components, { name: 'Main Toolbar', position: 'bottom' })
         mainToolbar.addChild(
-            ifcLoader.uiElement.get("main"),
+            /*ifcLoader.uiElement.get("main"),*/
             propertiesProcessor.uiElement.get("main"),
             clipper.uiElement.get("main"),
-            modelTree.uiElement.get("main"),
+            /*modelTree.uiElement.get("main"),*/
             camera.uiElement.get("main"),
             fragments.uiElement.get("main"),
             propsFinder.uiElement.get("main")

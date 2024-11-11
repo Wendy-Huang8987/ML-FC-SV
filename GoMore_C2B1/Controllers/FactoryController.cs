@@ -59,7 +59,7 @@ namespace GoMore_C2B1.Controllers
                 StringContent sc = new StringContent(JsonConvert.SerializeObject(jsonValues), UnicodeEncoding.UTF8);
 
                 HttpClient http = new HttpClient();
-                string url = "http://192.168.0.221:987/demoapi/GASLabReceiveFile";
+                string url = "http://192.168.0.96:987/demoapi/GASLabReceiveFile";
                 MultipartFormDataContent mulContent = new MultipartFormDataContent("----WebKitFormBoundaryrXRBKlhEeCbfHIY");
 
                 var fileContent = new StreamContent(file.InputStream);
@@ -67,21 +67,57 @@ namespace GoMore_C2B1.Controllers
                 mulContent.Add(fileContent, "file", file.FileName);
                 mulContent.Add(sc, "input1");
                 await http.PostAsync(url, mulContent);
-
-                if (ModelState.IsValid)
+                try
                 {
-                    Random generator = new Random();
-                    
-                    factoryModel.ID = generator.Next(0, 1000000).ToString("D6");
-                    factoryModel.FileName = file.FileName.Split('.')[0];
-                    factoryModel.UploadTime = DateTime.UtcNow.ToString();
-                    factoryModel.Uploader = Session["Account"].ToString();
-                    factoryModel.FileType = file.FileName.Split('.')[1];
-                    factoryModel.FileConvert2 = option;
-                    FC.FCM.Add(factoryModel);
-                    FC.SaveChanges();
+                    string directoryPath = "C:\\Test_2_output\\PanelOutPut";
+                    // 確保目錄存在
+                    if (Directory.Exists(directoryPath))
+                    {
+                        string filename = "CADTemp.3dm";
+                        string targetfile = Path.Combine(directoryPath, filename);
+                        if (System.IO.File.Exists(targetfile))
+                        {
+                            // 獲取目錄中的所有檔案
+                            string[] files = Directory.GetFiles(directoryPath);
+
+                            foreach (var f in files)
+                            {
+                                // 刪除檔案
+                                System.IO.File.Delete(f);
+                            }
+                            TempData["Msg"] = "Please check your model only has Layer 1 !!";
+                        }
+                        else
+                        {
+                            if (ModelState.IsValid)
+                            {
+                                Random generator = new Random();
+
+                                factoryModel.ID = generator.Next(0, 1000000).ToString("D6");
+                                factoryModel.FileName = file.FileName.Split('.')[0];
+                                factoryModel.UploadTime = DateTime.UtcNow.ToString();
+                                factoryModel.Uploader = Session["Account"].ToString();
+                                factoryModel.FileType = file.FileName.Split('.')[1];
+                                factoryModel.FileConvert2 = option;
+                                FC.FCM.Add(factoryModel);
+                                FC.SaveChanges();
+                            }
+                            TempData["Msg"] = "Post Successful";
+                        }
+                        
+                    }
+                    else
+                    {
+                        // 返回錯誤訊息，目錄不存在
+                        return Content("指定的目錄不存在");
+                    }
                 }
-                TempData["Msg"] = "Post Successful";
+                catch (Exception ex)
+                {
+                    // 返回錯誤訊息
+                    return Content("發生錯誤: " + ex.Message);
+                }
+                
             }
             catch (Exception)
             {

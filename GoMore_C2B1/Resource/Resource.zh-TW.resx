@@ -414,4 +414,7 @@
   <data name="UploadRelated" xml:space="preserve">
     <value>上傳相關聯檔案</value>
   </data>
+  <data name="installed" xml:space="preserve">
+    <value>已安裝</value>
+  </data>
 </root>

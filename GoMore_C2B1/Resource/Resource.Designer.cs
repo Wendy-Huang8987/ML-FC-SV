@@ -520,7 +520,7 @@ namespace GoMore_C2B1.Resource {
         }
         
         /// <summary>
-        ///   查詢類似 Chang 的當地語系化字串。
+        ///   查詢類似 UpdateSatus 的當地語系化字串。
         /// </summary>
         public static string ChangeStatus {
             get {

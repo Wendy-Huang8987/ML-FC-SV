@@ -640,7 +640,7 @@
     <value>Assembling</value>
   </data>
   <data name="ChangeStatus" xml:space="preserve">
-    <value>Chang</value>
+    <value>UpdateSatus</value>
   </data>
   <data name="Installed" xml:space="preserve">
     <value>Installed</value>
